@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Entidade que representa Empresa
@@ -47,6 +48,8 @@ public class Merchant extends EntitySupport {
     private boolean displayAddress;
     
     private String note;
+    
+    private UUID userId;
     
     public String getFantasyName() {
         return fantasyName;
@@ -184,6 +187,14 @@ public class Merchant extends EntitySupport {
         this.displayAddress = displayAddress;
     }
     
+    public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
+	}
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -209,4 +220,5 @@ public class Merchant extends EntitySupport {
                 .hash(fantasyName, companyName, cnpj, address, acceptTerms, active, logo, categories, ads, whatsapp,
                         phones, ifood, uberEats, rappi, ownDelivery, displayAddress, note);
     }
+
 }
