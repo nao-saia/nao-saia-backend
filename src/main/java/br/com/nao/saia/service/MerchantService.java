@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,63 +27,66 @@ import java.util.stream.Collectors;
 public class MerchantService {
 
     private final MerchantRepository merchantRepository;
-    private final MerchantConverter merchantConverter;
 
-    public MerchantService(MerchantRepository merchantRepository, MerchantConverter merchantConverter) {
+    public MerchantService(MerchantRepository merchantRepository) {
         this.merchantRepository = merchantRepository;
-        this.merchantConverter = merchantConverter;
     }
 
-    public Mono<MerchantDTO> findById(UUID id) {
+    public Mono<MerchantDTO> findById(final UUID id) {
         return merchantRepository.findById(id)
-                .map(merchantConverter::fromDomainToDTO)
+                .map(MerchantConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new MerchantNotFoundException(id)));
     }
 
     public Flux<MerchantDTO> findAll() {
         return merchantRepository.findAll()
-                .map(merchantConverter::fromDomainToDTO);
+                .map(MerchantConverter::fromDomainToDTO);
     }
 
-    public void save(MerchantDTO merchantDTO) {
-        Merchant merchant = merchantConverter.fromDTOToDomain(merchantDTO);
-        merchantRepository.save(merchant);
+    public Mono<MerchantDTO> save(final MerchantDTO merchantDTO) {
+        return Mono.just(merchantDTO)
+                .map(MerchantConverter::fromDTOToDomain)
+                .flatMap(merchantToBeSaved -> merchantRepository.save(merchantToBeSaved)
+                        .then(Mono.just(MerchantConverter.fromDomainToDTO(merchantToBeSaved))));
     }
 
-    public Mono<Void> deleteById(UUID id) {
+    public Mono<MerchantDTO> deleteById(final UUID id) {
         return merchantRepository.findById(id)
-                .flatMap(merchantRepository::delete);
+                .switchIfEmpty(Mono.empty())
+                .filter(Objects::nonNull)
+                .flatMap(productToBeDeleted -> merchantRepository.delete(productToBeDeleted)
+                        .then(Mono.just(MerchantConverter.fromDomainToDTO(productToBeDeleted))));
     }
 
-    public Mono<PageSupport<MerchantDTO>> findByCategory(String category, Pageable pageable) {
+    public Mono<PageSupport<MerchantDTO>> findByCategory(final String category, final Pageable pageable) {
         return merchantRepository.findByCategoriesIn(category)
                 .collectList()
                 .map(list -> new PageSupport<>(
                         list
                                 .stream()
-                                .map(merchantConverter::fromDomainToDTO)
+                                .map(MerchantConverter::fromDomainToDTO)
                                 .collect(Collectors.toList()),
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
 
-    public Mono<PageSupport<MerchantDTO>> findByCity(String city, Pageable pageable) {
+    public Mono<PageSupport<MerchantDTO>> findByCity(final String city, final Pageable pageable) {
         return merchantRepository.findByAddressCity(city)
                 .collectList()
                 .map(list -> new PageSupport<>(
                         list
                                 .stream()
-                                .map(merchantConverter::fromDomainToDTO)
+                                .map(MerchantConverter::fromDomainToDTO)
                                 .collect(Collectors.toList()),
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
 
-    public Mono<PageSupport<MerchantDTO>> findByState(String state, Pageable pageable) {
+    public Mono<PageSupport<MerchantDTO>> findByState(final String state, final Pageable pageable) {
         return merchantRepository.findByAddressState(state)
                 .collectList()
                 .map(list -> new PageSupport<>(
                         list
                                 .stream()
-                                .map(merchantConverter::fromDomainToDTO)
+                                .map(MerchantConverter::fromDomainToDTO)
                                 .collect(Collectors.toList()),
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
@@ -92,7 +96,7 @@ public class MerchantService {
      * https://drissamri.be/blog/2015/08/18/build-a-location-api-with-spring-data-mongodb-and-geojson/
      * @return
      */
-    public Mono<PageSupport<MerchantDTO>> findByLocation(double latitude, double longitude, double distance, Pageable pageable) {
+    public Mono<PageSupport<MerchantDTO>> findByLocation(final double latitude, final double longitude, final double distance, final Pageable pageable) {
         return merchantRepository.findByAddressLocationNear(
                 new Point(latitude, longitude),
                 new Distance(distance, Metrics.KILOMETERS))
@@ -100,7 +104,7 @@ public class MerchantService {
                 .map(list -> new PageSupport<>(
                         list
                             .stream()
-                            .map(merchantConverter::fromDomainToDTO)
+                            .map(MerchantConverter::fromDomainToDTO)
                             .collect(Collectors.toList()),
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }

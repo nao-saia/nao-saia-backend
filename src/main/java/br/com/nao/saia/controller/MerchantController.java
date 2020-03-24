@@ -44,8 +44,8 @@ public class MerchantController {
         return merchantService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Mono<MerchantDTO> findById(@PathVariable UUID id) {
+    @GetMapping("{id}")
+    public Mono<MerchantDTO> findById(@PathVariable final UUID id) {
         return merchantService.findById(id);
     }
 
@@ -80,12 +80,12 @@ public class MerchantController {
     }
 
     @PostMapping
-    public void save(@Valid @RequestBody MerchantDTO merchantDTO) {
-        merchantService.save(merchantDTO);
+    public Mono<MerchantDTO> save(@Valid @RequestBody final MerchantDTO merchantDTO) {
+        return merchantService.save(merchantDTO);
     }
 
     @DeleteMapping("{id}")
-    public Mono<Void> delete(@PathVariable UUID id) {
+    public Mono<MerchantDTO> delete(@PathVariable final UUID id) {
         return merchantService.deleteById(id);
     }
 

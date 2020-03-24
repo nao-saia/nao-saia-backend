@@ -12,7 +12,6 @@ public class City {
 
     private String name;
 
-    @DBRef
     private State state;
 
     public Integer getCodeIbge() {

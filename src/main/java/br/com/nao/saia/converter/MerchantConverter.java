@@ -2,12 +2,13 @@ package br.com.nao.saia.converter;
 
 import br.com.nao.saia.dto.MerchantDTO;
 import br.com.nao.saia.model.Merchant;
-import org.springframework.stereotype.Component;
 
-@Component
-public class MerchantConverter {
+public final class MerchantConverter {
 
-    public Merchant fromDTOToDomain(MerchantDTO merchantDTO) {
+    public MerchantConverter() {
+    }
+
+    public static Merchant fromDTOToDomain(MerchantDTO merchantDTO) {
         Merchant merchant = new Merchant();
         merchant.setId(merchantDTO.getId());
         merchant.setCreatedAt(merchantDTO.getCreatedAt());
@@ -15,7 +16,7 @@ public class MerchantConverter {
         merchant.setFantasyName(merchantDTO.getFantasyName());
         merchant.setCompanyName(merchantDTO.getCompanyName());
         merchant.setCnpj(merchantDTO.getCnpj());
-        merchant.setAddress(AdressConverter.fromDTOToDomain(merchantDTO.getAddress()));
+        merchant.setAddress(AddressConverter.fromDTOToDomain(merchantDTO.getAddress()));
         merchant.setAcceptTerms(merchantDTO.isAcceptTerms());
         merchant.setActive(merchantDTO.isActive());
         merchant.setLogo(merchantDTO.getLogo());
@@ -32,7 +33,7 @@ public class MerchantConverter {
         return merchant;
     }
 
-    public MerchantDTO fromDomainToDTO(Merchant merchant) {
+    public static MerchantDTO fromDomainToDTO(Merchant merchant) {
         MerchantDTO merchantDTO = new MerchantDTO();
         merchantDTO.setId(merchant.getId());
         merchantDTO.setCreatedAt(merchant.getCreatedAt());
@@ -40,7 +41,7 @@ public class MerchantConverter {
         merchantDTO.setFantasyName(merchant.getFantasyName());
         merchantDTO.setCompanyName(merchant.getCompanyName());
         merchantDTO.setCnpj(merchant.getCnpj());
-        merchantDTO.setAddress(AdressConverter.fromDomainToDTO(merchant.getAddress()));
+        merchantDTO.setAddress(AddressConverter.fromDomainToDTO(merchant.getAddress()));
         merchantDTO.setAcceptTerms(merchant.isAcceptTerms());
         merchantDTO.setActive(merchant.isActive());
         merchantDTO.setLogo(merchant.getLogo());

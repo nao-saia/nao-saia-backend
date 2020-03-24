@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 public class StateService {
 
@@ -34,9 +37,25 @@ public class StateService {
                 .map(StateConverter::fromDomainToDTO);
     }
 
-    public void save(StateDTO stateDTO) {
-        State state = StateConverter.fromDTOToDomain(stateDTO);
-        stateRepository.save(state);
+    public Mono<StateDTO> save(StateDTO stateDTO) {
+        return Mono.just(stateDTO)
+                .map(StateConverter::fromDTOToDomain)
+                .flatMap(stateToBeSaved -> stateRepository.save(stateToBeSaved)
+                        .then(Mono.just(StateConverter.fromDomainToDTO(stateToBeSaved))));
     }
+
+//    public Flux<StateDTO> saveAll(List<State> states) {
+//        return stateRepository.saveAll(states)
+//                .flatMap(answer -> {
+//                    return states
+//                            .findById(answer.getQuestionId())
+//                            .flatMap(question -> {
+//                                question.getAnswers().removeIf(ans -> Objects.equals(ans.getId(), answer.getId()));
+//                                question.getAnswers().add(answer);
+//                                return questionRepository.save(question);
+//                            })
+//                            .thenReturn(answer);
+//                });
+//    }
 
 }
