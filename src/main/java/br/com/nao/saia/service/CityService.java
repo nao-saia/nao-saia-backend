@@ -30,6 +30,10 @@ public class CityService {
         return cityRepository.findAll()
                 .map(cityConverter::fromDomainToDTO);
     }
+    public Flux<CityDTO> findByUF(String uf) {
+        return cityRepository.findByStateUf(uf)
+                .map(cityConverter::fromDomainToDTO);
+    }
 
     public Mono<CityDTO> save(CityDTO cityDTO) {
         return Mono.just(cityDTO)
