@@ -1,6 +1,7 @@
 package br.com.nao.saia.service;
 
 import br.com.nao.saia.converter.CategoryConverter;
+import br.com.nao.saia.converter.MerchantConverter;
 import br.com.nao.saia.dto.CategoryDTO;
 import br.com.nao.saia.exception.CategoryNotFoundException;
 import br.com.nao.saia.model.Category;
@@ -31,9 +32,11 @@ public class CategoryService {
                 .map(CategoryConverter::fromDomainToDTO);
     }
 
-    public void save(CategoryDTO categoryDTO) {
-        Category category = CategoryConverter.fromDTOToDomain(categoryDTO);
-        categoryRepository.save(category);
+    public Mono<CategoryDTO> save(CategoryDTO categoryDTO) {
+        return Mono.just(categoryDTO)
+                .map(CategoryConverter::fromDTOToDomain)
+                .flatMap(categoryToBeSaved -> categoryRepository.save(categoryToBeSaved)
+                        .then(Mono.just(CategoryConverter.fromDomainToDTO(categoryToBeSaved))));
     }
 
 }

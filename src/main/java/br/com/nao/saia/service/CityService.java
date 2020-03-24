@@ -3,8 +3,6 @@ package br.com.nao.saia.service;
 import br.com.nao.saia.converter.CityConverter;
 import br.com.nao.saia.dto.CityDTO;
 import br.com.nao.saia.exception.CityNotFoundException;
-import br.com.nao.saia.model.City;
-import br.com.nao.saia.model.State;
 import br.com.nao.saia.repository.CityRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,20 +25,17 @@ public class CityService {
                 .map(cityConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new CityNotFoundException(id)));
     }
-    
-    public Flux<CityDTO> findByUF(String uf) {
-    	return cityRepository.findByStateUf(uf)
-    			.map(cityConverter::fromDomainToDTO);
-    }
 
     public Flux<CityDTO> findAll() {
         return cityRepository.findAll()
                 .map(cityConverter::fromDomainToDTO);
     }
 
-    public void save(CityDTO cityDTO) {
-        City city = cityConverter.fromDTOToDomain(cityDTO);
-        cityRepository.save(city);
+    public Mono<CityDTO> save(CityDTO cityDTO) {
+        return Mono.just(cityDTO)
+                .map(cityConverter::fromDTOToDomain)
+                .flatMap(cityToBeSaved -> cityRepository.save(cityToBeSaved)
+                        .then(Mono.just(cityConverter.fromDomainToDTO(cityToBeSaved))));
     }
 
 }

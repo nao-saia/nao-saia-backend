@@ -5,9 +5,9 @@ import br.com.nao.saia.dto.GeoLocationDTO;
 import br.com.nao.saia.model.Address;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
-public final class AdressConverter {
+public final class AddressConverter {
 
-    private AdressConverter() {
+    private AddressConverter() {
     }
 
     public static Address fromDTOToDomain(AddressDTO addressDTO) {
