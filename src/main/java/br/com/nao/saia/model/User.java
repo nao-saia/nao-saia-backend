@@ -1,5 +1,8 @@
 package br.com.nao.saia.model;
 
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -11,11 +14,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public class User extends EntitySupport {
 
+	@NotNull(message="Email do usuário é obrigatório")
 	private String email;
+	@NotNull(message="Nome do usuário é obrigatório")
 	private String name;
+	@NotNull(message="Senha do usuário é obrigatória")
 	private String password;
+	@AssertTrue(message = "Usuário não aceitou termos de compromisso e privacidade")
 	private boolean acceptTerms;
-
 
 	public String getEmail() {
 		return email;
@@ -49,6 +55,8 @@ public class User extends EntitySupport {
 		this.acceptTerms = acceptTerms;
 	}
 
-
+	public void hidePass() {
+		this.password = null;
+	}
 
 }
