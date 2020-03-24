@@ -1,0 +1,220 @@
+{
+  "estados": [
+    {
+      "idestadoibge": 11,
+      "sigla": "RO",
+      "nomeestado": "RONDONIA",
+      "codigoibge": 11,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 12,
+      "sigla": "AC",
+      "nomeestado": "ACRE",
+      "codigoibge": 12,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 13,
+      "sigla": "AM",
+      "nomeestado": "AMAZONAS",
+      "codigoibge": 13,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 14,
+      "sigla": "RR",
+      "nomeestado": "RORAIMA",
+      "codigoibge": 14,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 15,
+      "sigla": "PA",
+      "nomeestado": "PARA",
+      "codigoibge": 15,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 16,
+      "sigla": "AP",
+      "nomeestado": "AMAPA",
+      "codigoibge": 16,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 17,
+      "sigla": "TO",
+      "nomeestado": "TOCANTINS",
+      "codigoibge": 17,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 21,
+      "sigla": "MA",
+      "nomeestado": "MARANHAO",
+      "codigoibge": 21,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 22,
+      "sigla": "PI",
+      "nomeestado": "PIAUI",
+      "codigoibge": 22,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 23,
+      "sigla": "CE",
+      "nomeestado": "CEARA",
+      "codigoibge": 23,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 24,
+      "sigla": "RN",
+      "nomeestado": "RIO GRANDE DO NORTE",
+      "codigoibge": 24,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 25,
+      "sigla": "PB",
+      "nomeestado": "PARAIBA",
+      "codigoibge": 25,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 26,
+      "sigla": "PE",
+      "nomeestado": "PERNAMBUCO",
+      "codigoibge": 26,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 27,
+      "sigla": "AL",
+      "nomeestado": "ALAGOAS",
+      "codigoibge": 27,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 28,
+      "sigla": "SE",
+      "nomeestado": "SERGIPE",
+      "codigoibge": 28,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 29,
+      "sigla": "BA",
+      "nomeestado": "BAHIA",
+      "codigoibge": 29,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 31,
+      "sigla": "MG",
+      "nomeestado": "MINAS GERAIS",
+      "codigoibge": 31,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 32,
+      "sigla": "ES",
+      "nomeestado": "ESPIRITO SANTO",
+      "codigoibge": 32,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 33,
+      "sigla": "RJ",
+      "nomeestado": "RIO DE JANEIRO",
+      "codigoibge": 33,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 35,
+      "sigla": "SP",
+      "nomeestado": "SAO PAULO",
+      "codigoibge": 35,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 41,
+      "sigla": "PR",
+      "nomeestado": "PARANA",
+      "codigoibge": 41,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 42,
+      "sigla": "SC",
+      "nomeestado": "SANTA CATARINA",
+      "codigoibge": 42,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 43,
+      "sigla": "RS",
+      "nomeestado": "RIO GRANDE DO SUL",
+      "codigoibge": 43,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 50,
+      "sigla": "MS",
+      "nomeestado": "MATO GROSSO DO SUL",
+      "codigoibge": 50,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 51,
+      "sigla": "MT",
+      "nomeestado": "MATO GROSSO",
+      "codigoibge": 51,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 52,
+      "sigla": "GO",
+      "nomeestado": "GOIAS",
+      "codigoibge": 52,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    },
+    {
+      "idestadoibge": 53,
+      "sigla": "DF",
+      "nomeestado": "DISTRITO FEDERAL",
+      "codigoibge": 53,
+      "nomepais": "BRASIL",
+      "dataatualizacao": "2019-05-12T11:58:51Z"
+    }
+  ]
+}
