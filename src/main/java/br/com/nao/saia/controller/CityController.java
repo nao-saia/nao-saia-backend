@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -45,7 +46,10 @@ public class CityController {
     }
 
     @GetMapping
-    public Flux<CityDTO> findAll() {
+    public Flux<CityDTO> findAll(@RequestParam(required = false) String uf) {
+    	if (uf != null && !uf.isEmpty()) {
+    		return cityService.findByUF(uf);
+    	}
         return cityService.findAll();
     }
 
@@ -53,7 +57,7 @@ public class CityController {
     public Mono<CityDTO> findById(@PathVariable Integer id) {
         return cityService.findById(id);
     }
-
+    
     @PostMapping
     public Mono<CityDTO> save(@Valid @RequestBody CityDTO cityDTO) {
         return cityService.save(cityDTO);
