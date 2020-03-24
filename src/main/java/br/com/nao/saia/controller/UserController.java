@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
@@ -43,15 +44,9 @@ public class UserController {
 	}
 
 	@PostMapping(consumes = JSON, produces = JSON)
-	public Mono<ResponseEntity<?>> createUser(@Valid @RequestBody User user) {
-		Mono<User> userCreated = this.service.createUser(user);
-		return userCreated.flatMap(foundUser -> {
-			if (foundUser.getId() != null) {
-				return Mono.just(ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.success(foundUser)));
-			}
-			return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já cadastrado"));
-		});
-
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public Mono<User> createUser(@Valid @RequestBody User user) {
+		return this.service.createUser(user);
 	}
 
 	@GetMapping("/{id}")

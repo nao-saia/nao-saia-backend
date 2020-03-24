@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import br.com.nao.saia.dto.ResponseDTO;
+import br.com.nao.saia.exception.BusinessException;
 import br.com.nao.saia.exception.UserNotFoundException;
 import br.com.nao.saia.model.User;
 import br.com.nao.saia.repository.UserRepository;
@@ -39,8 +40,8 @@ public class UserService {
 
 	public Mono<User> createUser(User user) {
 		return this.repository.findByEmail(user.getEmail())
-			.flatMap(foundUser -> Mono.just(new User()))
-			.switchIfEmpty(Mono.defer(() -> this.repository.save(user)));
+				.flatMap(foundUser -> Mono.error(new BusinessException("Usuário já cadastrado")))
+				.switchIfEmpty(Mono.defer(() -> this.repository.save(user)))
+				.cast(User.class);
 	}
-
 }
