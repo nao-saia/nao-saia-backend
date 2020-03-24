@@ -31,7 +31,7 @@ public class UserController {
 	private static final String JSON = MediaType.APPLICATION_JSON_VALUE;
 
 	private final UserService service;
-	
+
 	public UserController(UserService userService) {
 		this.service = userService;
 	}
@@ -42,12 +42,18 @@ public class UserController {
 		return ResponseEntity.ok(service.login(user));
 	}
 
-	@SuppressWarnings("rawtypes")
 	@PostMapping(consumes = JSON, produces = JSON)
-	public ResponseEntity<ResponseDTO> createUser(@Valid @RequestBody User user) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(user));
+	public Mono<ResponseEntity<?>> createUser(@Valid @RequestBody User user) {
+		Mono<User> userCreated = this.service.createUser(user);
+		return userCreated.flatMap(foundUser -> {
+			if (foundUser.getId() != null) {
+				return Mono.just(ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.success(foundUser)));
+			}
+			return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já cadastrado"));
+		});
+
 	}
-	
+
 	@GetMapping("/{id}")
 	public Mono<User> findById(@PathVariable UUID id) {
 		return service.findById(id);
