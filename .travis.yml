@@ -1,0 +1,14 @@
+language: java
+sudo: true
+dist: trusty
+jdk: oraclejdk8
+before_install:
+  - chmod +x mvnw
+install: true
+
+script:
+  - ./mvnw clean install
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
