@@ -3,6 +3,7 @@ package br.com.nao.saia.model;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Address {
 
@@ -11,8 +12,10 @@ public class Address {
 
     private String street;
 
+    @Indexed
     private String city;
 
+    @Indexed
     private String state;
 
     private String district;

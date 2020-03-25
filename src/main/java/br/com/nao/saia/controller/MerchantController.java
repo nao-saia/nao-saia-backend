@@ -1,10 +1,10 @@
 package br.com.nao.saia.controller;
 
 import br.com.nao.saia.dto.MerchantDTO;
-import br.com.nao.saia.model.Merchant;
 import br.com.nao.saia.service.MerchantService;
 import br.com.nao.saia.service.PageSupport;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +22,6 @@ import java.util.UUID;
 import static br.com.nao.saia.service.PageSupport.DEFAULT_PAGE_SIZE;
 import static br.com.nao.saia.service.PageSupport.FIRST_PAGE_NUM;
 
-/**
- * Classe que armazena os endpoints de {@link Merchant} recebendo as requisicoes,
- * tratando e devolvendo os resultados
- *
- * @author Taynan Rezende
- * @since 22/03/2020
- */
 @RestController
 @RequestMapping("merchants")
 public class MerchantController {
@@ -40,6 +33,7 @@ public class MerchantController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Flux<MerchantDTO> findAll() {
         return merchantService.findAll();
     }

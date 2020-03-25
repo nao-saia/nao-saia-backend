@@ -8,8 +8,6 @@ import java.util.UUID;
 
 public interface UserRepository extends ReactiveMongoRepository<User, UUID> {
 	
-	Mono<User> findByEmailAndPassword(String email, String password);
-	
-	Mono<User> findByEmail(String email);
+	Mono<User> findByUsername(String username);
 	
 }

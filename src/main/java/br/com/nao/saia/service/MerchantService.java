@@ -3,7 +3,6 @@ package br.com.nao.saia.service;
 import br.com.nao.saia.converter.MerchantConverter;
 import br.com.nao.saia.dto.MerchantDTO;
 import br.com.nao.saia.exception.MerchantNotFoundException;
-import br.com.nao.saia.model.Merchant;
 import br.com.nao.saia.repository.MerchantRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Distance;
@@ -17,12 +16,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Service de {@link Merchant}
- *
- * @author Taynan Rezende
- * @since 22/03/2020
- */
 @Service
 public class MerchantService {
 

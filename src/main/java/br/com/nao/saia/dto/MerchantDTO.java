@@ -1,6 +1,5 @@
 package br.com.nao.saia.dto;
 
-import br.com.nao.saia.model.Merchant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -8,12 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Classe representa o DTO de {@link Merchant}
- *
- * @author Taynan Rezende
- * @since 22/03/2020
- */
 public class MerchantDTO implements Serializable {
 
     private UUID id;

@@ -4,12 +4,10 @@ import br.com.nao.saia.model.Merchant;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
 import java.util.UUID;
 
-@Repository
 public interface MerchantRepository extends ReactiveMongoRepository<Merchant, UUID> {
 
 	Flux<Merchant> findByCategoriesIn(String category);
