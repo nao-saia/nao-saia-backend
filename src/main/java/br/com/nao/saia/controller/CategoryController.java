@@ -1,7 +1,6 @@
 package br.com.nao.saia.controller;
 
 import br.com.nao.saia.dto.CategoryDTO;
-import br.com.nao.saia.model.Merchant;
 import br.com.nao.saia.repository.CategoryRepository;
 import br.com.nao.saia.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +15,6 @@ import reactor.core.publisher.Mono;
 import javax.validation.Valid;
 import java.util.UUID;
 
-/**
- * Classe que armazena os endpoints de {@link Merchant} recebendo as requisicoes,
- * tratando e devolvendo os resultados
- *
- * @author Taynan Rezende
- * @since 22/03/2020
- */
 @RestController
 @RequestMapping("categories")
 public class CategoryController {

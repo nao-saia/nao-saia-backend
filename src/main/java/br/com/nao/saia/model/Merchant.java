@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Entidade que representa Empresa
- *
- * @author Taynan Rezende
- * @since 22/03/2020
- */
 @Document(collection = "merchants")
 public class Merchant extends EntitySupport {
 

@@ -12,8 +12,10 @@ public class EntitySupport implements Persistable<UUID> {
     @Id
     private UUID id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateAt;
 
     public UUID getId() {

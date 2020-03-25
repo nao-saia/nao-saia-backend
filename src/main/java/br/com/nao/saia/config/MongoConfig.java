@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @Configuration
-@EnableReactiveMongoRepositories
+@EnableReactiveMongoRepositories(basePackages = "br.com.nao.saia.repository")
 public class MongoConfig {
 
     private final MongoTemplate mongoTemplate;

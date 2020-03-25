@@ -1,10 +1,8 @@
 package br.com.nao.saia.service;
 
 import br.com.nao.saia.converter.CategoryConverter;
-import br.com.nao.saia.converter.MerchantConverter;
 import br.com.nao.saia.dto.CategoryDTO;
 import br.com.nao.saia.exception.CategoryNotFoundException;
-import br.com.nao.saia.model.Category;
 import br.com.nao.saia.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

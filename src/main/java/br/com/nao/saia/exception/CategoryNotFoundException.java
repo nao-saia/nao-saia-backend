@@ -4,9 +4,6 @@ import java.util.UUID;
 
 public class CategoryNotFoundException extends RuntimeException {
 
-    /**
-	 *
-	 */
 	private static final long serialVersionUID = 4007640986383724946L;
 
 	public CategoryNotFoundException(UUID id) {

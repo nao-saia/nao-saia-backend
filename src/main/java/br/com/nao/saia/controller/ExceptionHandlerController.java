@@ -1,6 +1,7 @@
 package br.com.nao.saia.controller;
 
 import br.com.nao.saia.dto.response.ResponseError;
+import br.com.nao.saia.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionFailedException;
@@ -20,9 +21,17 @@ public class ExceptionHandlerController {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ResponseEntity<ResponseError> handleIllegalArgumentException(final IllegalArgumentException ex) {
-        LOGGER.error(AN_ERROR_OCCURRED, ex.getMessage(), ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseError(ex.getMessage()));
+    public ResponseEntity<ResponseError> handleIllegalArgumentException(final IllegalArgumentException e) {
+        LOGGER.error(AN_ERROR_OCCURRED, e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseError(e.getMessage()));
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ResponseError> handleBusinessException(final BusinessException e) {
+        LOGGER.error(AN_ERROR_OCCURRED, e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseError(e.getMessage()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
