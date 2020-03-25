@@ -21,7 +21,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Mono<CategoryDTO> findById(UUID id) {
+    public Mono<CategoryDTO> findById(final UUID id) {
         return categoryRepository.findById(id)
                 .map(CategoryConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new CategoryNotFoundException(id)));
@@ -32,7 +32,7 @@ public class CategoryService {
                 .map(CategoryConverter::fromDomainToDTO);
     }
 
-    public Mono<CategoryDTO> save(CategoryDTO categoryDTO) {
+    public Mono<CategoryDTO> save(final CategoryDTO categoryDTO) {
         return Mono.just(categoryDTO)
                 .map(CategoryConverter::fromDTOToDomain)
                 .flatMap(categoryToBeSaved -> categoryRepository.save(categoryToBeSaved)

@@ -13,15 +13,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @Configuration
-public class MongoConfiguration {
+@EnableReactiveMongoRepositories
+public class MongoConfig {
 
     private final MongoTemplate mongoTemplate;
 
     private final MongoConverter mongoConverter;
 
-    public MongoConfiguration(MongoTemplate mongoTemplate, MongoConverter mongoConverter) {
+    public MongoConfig(MongoTemplate mongoTemplate, MongoConverter mongoConverter) {
         this.mongoTemplate = mongoTemplate;
         this.mongoConverter = mongoConverter;
     }

@@ -41,12 +41,12 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Mono<CategoryDTO> findById(@PathVariable UUID id) {
+    public Mono<CategoryDTO> findById(@PathVariable final UUID id) {
         return categoryService.findById(id);
     }
 
     @PostMapping
-    public Mono<CategoryDTO> save(@Valid @RequestBody CategoryDTO cityDTO) {
+    public Mono<CategoryDTO> save(@Valid @RequestBody final CategoryDTO cityDTO) {
         return categoryService.save(cityDTO);
     }
 

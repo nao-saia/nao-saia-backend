@@ -27,7 +27,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public Mono<UserDTO> login(LoginDTO loginDTO) {
+	public Mono<UserDTO> login(final LoginDTO loginDTO) {
 		return userRepository.findByEmail(loginDTO.getEmail())
 				.map(UserConverter::fromDomainToDTO)
 				.map(user -> {
@@ -39,11 +39,11 @@ public class UserService {
 				.switchIfEmpty(Mono.error(new UserNotFoundException(loginDTO.getEmail())));
 	}
 
-	public Mono<User> findById(UUID id) {
+	public Mono<User> findById(final UUID id) {
 		return this.userRepository.findById(id).switchIfEmpty(Mono.error(new UserNotFoundException(id)));
 	}
 
-	public Mono<UserDTO> createUser(UserDTO userDTO) {
+	public Mono<UserDTO> createUser(final UserDTO userDTO) {
 		return userRepository.findByEmail(userDTO.getEmail())
                 .flatMap(user -> Mono.error(new BusinessException("Usuário já cadastrado")))
                 .switchIfEmpty(Mono.just(userDTO)

@@ -46,7 +46,7 @@ public class CityController {
     }
 
     @GetMapping
-    public Flux<CityDTO> findAll(@RequestParam(required = false) String uf) {
+    public Flux<CityDTO> findAll(@RequestParam(required = false) final String uf) {
     	if (uf != null && !uf.isEmpty()) {
     		return cityService.findByUF(uf);
     	}
@@ -54,12 +54,12 @@ public class CityController {
     }
 
     @GetMapping("/{id}")
-    public Mono<CityDTO> findById(@PathVariable Integer id) {
+    public Mono<CityDTO> findById(@PathVariable final Integer id) {
         return cityService.findById(id);
     }
 
     @PostMapping
-    public Mono<CityDTO> save(@Valid @RequestBody CityDTO cityDTO) {
+    public Mono<CityDTO> save(@Valid @RequestBody final CityDTO cityDTO) {
         return cityService.save(cityDTO);
     }
 

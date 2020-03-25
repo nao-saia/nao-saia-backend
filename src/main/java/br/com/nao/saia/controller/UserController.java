@@ -33,17 +33,17 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public Mono<User> findById(@PathVariable UUID id) {
+	public Mono<User> findById(@PathVariable final UUID id) {
 		return service.findById(id);
 	}
 
 	@PostMapping("login")
-	public Mono<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
+	public Mono<UserDTO> login(@Valid @RequestBody final LoginDTO loginDTO) {
 		return service.login(loginDTO);
 	}
 
 	@PostMapping
-	public Mono<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
+	public Mono<UserDTO> createUser(@Valid @RequestBody final UserDTO userDTO) {
 		return this.service.createUser(userDTO);
 	}
 

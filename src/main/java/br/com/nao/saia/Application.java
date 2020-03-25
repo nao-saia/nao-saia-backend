@@ -2,7 +2,6 @@ package br.com.nao.saia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 /**
  * Classe responsável por realizar o boot da aplicação
@@ -11,7 +10,6 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
  * @since 22/03/2020
  */
 @SpringBootApplication
-@EnableReactiveMongoRepositories
 public class Application {
 
     public static void main(String[] args) {

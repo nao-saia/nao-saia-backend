@@ -21,12 +21,12 @@ public class StateService {
         this.stateRepository = stateRepository;
     }
 
-    public Mono<State> findById(Integer id) {
+    public Mono<State> findById(final Integer id) {
         return stateRepository.findById(id)
                 .switchIfEmpty(Mono.error(new StateNotFoundException(id)));
     }
 
-    public Mono<StateDTO> findDTOById(Integer id) {
+    public Mono<StateDTO> findDTOById(final Integer id) {
         return stateRepository.findById(id)
                 .map(StateConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new StateNotFoundException(id)));
@@ -37,25 +37,11 @@ public class StateService {
                 .map(StateConverter::fromDomainToDTO);
     }
 
-    public Mono<StateDTO> save(StateDTO stateDTO) {
+    public Mono<StateDTO> save(final StateDTO stateDTO) {
         return Mono.just(stateDTO)
                 .map(StateConverter::fromDTOToDomain)
                 .flatMap(stateToBeSaved -> stateRepository.save(stateToBeSaved)
                         .then(Mono.just(StateConverter.fromDomainToDTO(stateToBeSaved))));
     }
-
-//    public Flux<StateDTO> saveAll(List<State> states) {
-//        return stateRepository.saveAll(states)
-//                .flatMap(answer -> {
-//                    return states
-//                            .findById(answer.getQuestionId())
-//                            .flatMap(question -> {
-//                                question.getAnswers().removeIf(ans -> Objects.equals(ans.getId(), answer.getId()));
-//                                question.getAnswers().add(answer);
-//                                return questionRepository.save(question);
-//                            })
-//                            .thenReturn(answer);
-//                });
-//    }
 
 }

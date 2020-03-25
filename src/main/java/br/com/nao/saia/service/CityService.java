@@ -20,7 +20,7 @@ public class CityService {
         this.cityConverter = cityConverter;
     }
 
-    public Mono<CityDTO> findById(Integer id) {
+    public Mono<CityDTO> findById(final Integer id) {
         return cityRepository.findById(id)
                 .map(cityConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new CityNotFoundException(id)));
@@ -30,12 +30,12 @@ public class CityService {
         return cityRepository.findAll()
                 .map(cityConverter::fromDomainToDTO);
     }
-    public Flux<CityDTO> findByUF(String uf) {
+    public Flux<CityDTO> findByUF(final String uf) {
         return cityRepository.findByStateUf(uf)
                 .map(cityConverter::fromDomainToDTO);
     }
 
-    public Mono<CityDTO> save(CityDTO cityDTO) {
+    public Mono<CityDTO> save(final CityDTO cityDTO) {
         return Mono.just(cityDTO)
                 .map(cityConverter::fromDTOToDomain)
                 .flatMap(cityToBeSaved -> cityRepository.save(cityToBeSaved)

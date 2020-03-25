@@ -50,12 +50,12 @@ public class StateController {
     }
 
     @GetMapping("/{id}")
-    public Mono<StateDTO> findById(@PathVariable Integer id) {
+    public Mono<StateDTO> findById(@PathVariable final Integer id) {
         return stateService.findDTOById(id);
     }
 
     @PostMapping
-    public Mono<StateDTO> save(@Valid @RequestBody StateDTO stateDTO) {
+    public Mono<StateDTO> save(@Valid @RequestBody final StateDTO stateDTO) {
         return stateService.save(stateDTO);
     }
 
