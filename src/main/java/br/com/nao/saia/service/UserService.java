@@ -1,17 +1,19 @@
 package br.com.nao.saia.service;
 
+import java.util.Objects;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
 import br.com.nao.saia.converter.UserConverter;
 import br.com.nao.saia.dto.LoginDTO;
 import br.com.nao.saia.dto.UserDTO;
+import br.com.nao.saia.exception.BusinessException;
 import br.com.nao.saia.exception.PasswordInvalidException;
 import br.com.nao.saia.exception.UserNotFoundException;
 import br.com.nao.saia.model.User;
 import br.com.nao.saia.repository.UserRepository;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Service de {@link User}
@@ -42,10 +44,13 @@ public class UserService {
 	}
 
 	public Mono<UserDTO> createUser(UserDTO userDTO) {
-		return Mono.just(userDTO)
-				.map(UserConverter::fromDTOToDomain)
-				.flatMap(userToBeSaved -> userRepository.save(userToBeSaved)
-						.then(Mono.just(UserConverter.fromDomainToDTO(userToBeSaved))));
-	}
-
+		return userRepository.findByEmail(userDTO.getEmail())
+                .flatMap(user -> Mono.error(new BusinessException("Usuário já cadastrado")))
+                .switchIfEmpty(Mono.just(userDTO)
+                        .map(UserConverter::fromDTOToDomain)
+                        .flatMap(userToBeSaved -> userRepository.save(userToBeSaved)
+                        							.flatMap(userSaved -> Mono.just(UserConverter.fromDomainToDTO(userSaved)))
+                        ))
+                .cast(UserDTO.class);
+    }
 }
