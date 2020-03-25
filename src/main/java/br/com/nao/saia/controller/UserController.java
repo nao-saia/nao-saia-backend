@@ -2,6 +2,7 @@ package br.com.nao.saia.controller;
 
 import br.com.nao.saia.model.User;
 import br.com.nao.saia.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class UserController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public Flux<User> findAll() {
 		return service.findAll();
 	}
