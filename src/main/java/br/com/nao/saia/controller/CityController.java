@@ -57,28 +57,28 @@ public class CityController {
     public Mono<CityDTO> findById(@PathVariable Integer id) {
         return cityService.findById(id);
     }
-    
+
     @PostMapping
     public Mono<CityDTO> save(@Valid @RequestBody CityDTO cityDTO) {
         return cityService.save(cityDTO);
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void doSomethingAfterStartup() throws IOException {
-        String json = String.join(" ",
-                Files.readAllLines(
-                        Paths.get("/home/isaiasneto/Documentos/Projects/nao-saia/back-end-2/nao-saia/src/main/resources/cidades_202003221428.json"),
-                        StandardCharsets.UTF_8));
-
-        List<Cidade> cities = new ObjectMapper().readValue(json, Cidades.class).getCidades();
-
-        Flux<CityDTO> cityFlux = Flux.fromIterable(cities)
-                .map(city -> new CityDTO(city.getCodigoibge(), city.getNomecidade(), city.getIdestadoibge()))
-                .flatMap(cityService::save);
-
-        cityFlux
-                .then(cityRepository.count())
-                .subscribe(count -> System.out.println("Adding " + count + " cities to data seed."));
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void doSomethingAfterStartup() throws IOException {
+//        String json = String.join(" ",
+//                Files.readAllLines(
+//                        Paths.get("/home/isaiasneto/Documentos/Projects/nao-saia/back-end-2/nao-saia/src/main/resources/cidades_202003221428.json"),
+//                        StandardCharsets.UTF_8));
+//
+//        List<Cidade> cities = new ObjectMapper().readValue(json, Cidades.class).getCidades();
+//
+//        Flux<CityDTO> cityFlux = Flux.fromIterable(cities)
+//                .map(city -> new CityDTO(city.getCodigoibge(), city.getNomecidade(), city.getIdestadoibge()))
+//                .flatMap(cityService::save);
+//
+//        cityFlux
+//                .then(cityRepository.count())
+//                .subscribe(count -> System.out.println("Adding " + count + " cities to data seed."));
+//    }
 
 }
