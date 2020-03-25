@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.nao.saia.dto.GeoLocationDTO;
+import br.com.nao.saia.dto.AddressDTO;
 import br.com.nao.saia.service.GeolocationService;
 import reactor.core.publisher.Mono;
 
@@ -22,8 +22,8 @@ public class GeolocationController {
 	}
 
 	@GetMapping("{zipCode}")
-	public Mono<GeoLocationDTO> getCoordinatesFromZipCode(@PathVariable @NotBlank final String zipCode) {
-		return this.geolocationService.getCoordinatesFromZipCode(zipCode);
+	public Mono<AddressDTO> getAddressFromZipCode(@PathVariable @NotBlank final String zipCode) {
+		return this.geolocationService.getAddressFromZipCode(zipCode);
 	}
 
 }
