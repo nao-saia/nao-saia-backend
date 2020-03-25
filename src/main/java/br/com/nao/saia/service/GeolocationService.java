@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import br.com.nao.saia.converter.AddressConverter;
 import br.com.nao.saia.dto.AddressDTO;
+import br.com.nao.saia.dto.GeoLocationDTO;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -29,7 +30,17 @@ public class GeolocationService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Mono<AddressDTO> getAddressFromZipCode(final String zipCode) {
 		Mono<Map> mono = client.get()
-			  .uri("/cep?cep=" + zipCode)
+			  .uri(String.format("/cep?cep=%s", zipCode))
+			  .header("Authorization", cepAbertoToken)
+			  .retrieve()
+			  .bodyToMono(Map.class);
+		return mono.flatMap(address -> Mono.just(AddressConverter.fromMapToAddressDTO(address)));
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Mono<AddressDTO> getAddressFromGeoLocation(final GeoLocationDTO geoLocation) {
+		Mono<Map> mono = client.get()
+			  .uri("/nearest?lat="+ geoLocation.getLatitude() +"&lng=" + geoLocation.getLongitude())
 			  .header("Authorization", cepAbertoToken)
 			  .retrieve()
 			  .bodyToMono(Map.class);
