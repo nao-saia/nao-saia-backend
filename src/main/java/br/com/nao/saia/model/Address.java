@@ -21,6 +21,8 @@ public class Address {
     private String district;
 
     private String zipcode;
+    
+    private String additionalInfo;
 
     public Point getLocation() {
         return location;
@@ -69,4 +71,14 @@ public class Address {
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
+
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+
+	public void setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
+    
+    
 }
