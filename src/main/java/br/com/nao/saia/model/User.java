@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +33,7 @@ public class User extends EntitySupport implements UserDetails {
 
 	@Indexed
 	@NotNull(message = "Email é obrigatório")
+	@Email(message = "Email inválido")
 	private String username;
 
 	@NotNull(message = "Senha é obrigatório")
