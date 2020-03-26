@@ -2,6 +2,7 @@ package br.com.nao.saia.service;
 
 import br.com.nao.saia.converter.MerchantConverter;
 import br.com.nao.saia.dto.MerchantDTO;
+import br.com.nao.saia.exception.BusinessException;
 import br.com.nao.saia.exception.MerchantNotFoundException;
 import br.com.nao.saia.repository.MerchantRepository;
 import org.springframework.data.domain.Pageable;
@@ -25,30 +26,15 @@ public class MerchantService {
         this.merchantRepository = merchantRepository;
     }
 
-    public Mono<MerchantDTO> findById(final UUID id) {
-        return merchantRepository.findById(id)
-                .map(MerchantConverter::fromDomainToDTO)
-                .switchIfEmpty(Mono.error(new MerchantNotFoundException(id)));
-    }
-
     public Flux<MerchantDTO> findAll() {
         return merchantRepository.findAll()
                 .map(MerchantConverter::fromDomainToDTO);
     }
 
-    public Mono<MerchantDTO> save(final MerchantDTO merchantDTO) {
-        return Mono.just(merchantDTO)
-                .map(MerchantConverter::fromDTOToDomain)
-                .flatMap(merchantToBeSaved -> merchantRepository.save(merchantToBeSaved)
-                        .then(Mono.just(MerchantConverter.fromDomainToDTO(merchantToBeSaved))));
-    }
-
-    public Mono<MerchantDTO> deleteById(final UUID id) {
+    public Mono<MerchantDTO> findById(final UUID id) {
         return merchantRepository.findById(id)
-                .switchIfEmpty(Mono.empty())
-                .filter(Objects::nonNull)
-                .flatMap(productToBeDeleted -> merchantRepository.delete(productToBeDeleted)
-                        .then(Mono.just(MerchantConverter.fromDomainToDTO(productToBeDeleted))));
+                .map(MerchantConverter::fromDomainToDTO)
+                .switchIfEmpty(Mono.error(new MerchantNotFoundException(id)));
     }
 
     public Mono<PageSupport<MerchantDTO>> findByCategory(final String category, final Pageable pageable) {
@@ -84,11 +70,6 @@ public class MerchantService {
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
 
-    /**
-     * Para funfar tem que habilitar o geoNear no mongoDb.
-     * https://drissamri.be/blog/2015/08/18/build-a-location-api-with-spring-data-mongodb-and-geojson/
-     * @return
-     */
     public Mono<PageSupport<MerchantDTO>> findByLocation(final double latitude, final double longitude, final double distance, final Pageable pageable) {
         return merchantRepository.findByAddressLocationNear(
                 new Point(latitude, longitude),
@@ -101,4 +82,33 @@ public class MerchantService {
                             .collect(Collectors.toList()),
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
+
+    public Mono<MerchantDTO> save(final MerchantDTO merchantDTO) {
+        return merchantRepository.findByCnpj(merchantDTO.getCnpj())
+                .flatMap(merchant -> Mono.error(new BusinessException("Estabelecimento já cadastrado")))
+                .switchIfEmpty(Mono.just(merchantDTO)
+                        .map(MerchantConverter::fromDTOToDomain)
+                        .flatMap(merchantToBeSaved -> merchantRepository.save(merchantToBeSaved)
+                                .flatMap(merchantSaved -> Mono.just(MerchantConverter.fromDomainToDTO(merchantSaved)))
+                        ))
+                .cast(MerchantDTO.class);
+    }
+
+    public Mono<MerchantDTO> update(UUID id, MerchantDTO merchantDTO) {
+        return merchantRepository.findById(id)
+                .switchIfEmpty(Mono.error(new MerchantNotFoundException(id)))
+                .map(merchant -> MerchantConverter.update(merchant, merchantDTO))
+                .flatMap(merchantToBeSaved -> merchantRepository.save(merchantToBeSaved)
+                        .flatMap(merchantSaved -> Mono.just(MerchantConverter.fromDomainToDTO(merchantSaved)))
+                );
+    }
+
+    public Mono<MerchantDTO> deleteById(final UUID id) {
+        return merchantRepository.findById(id)
+                .switchIfEmpty(Mono.empty())
+                .filter(Objects::nonNull)
+                .flatMap(productToBeDeleted -> merchantRepository.delete(productToBeDeleted)
+                        .then(Mono.just(MerchantConverter.fromDomainToDTO(productToBeDeleted))));
+    }
+
 }
