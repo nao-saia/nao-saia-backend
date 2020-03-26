@@ -3,10 +3,11 @@ package br.com.nao.saia.converter;
 import br.com.nao.saia.dto.AddressDTO;
 import br.com.nao.saia.dto.GeoLocationDTO;
 import br.com.nao.saia.model.Address;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 import java.util.Map;
-
-import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import java.util.Objects;
+import java.util.Optional;
 
 public final class AddressConverter {
 
@@ -21,6 +22,7 @@ public final class AddressConverter {
         address.setZipcode(addressDTO.getZipcode());
         address.setCity(addressDTO.getCity());
         address.setState(addressDTO.getState());
+        address.setAdditionalInfo(addressDTO.getAdditionalInfo());
         return address;
     }
 
@@ -32,6 +34,7 @@ public final class AddressConverter {
         addressDTO.setZipcode(address.getZipcode());
         addressDTO.setCity(address.getCity());
         addressDTO.setState(address.getState());
+        addressDTO.setAdditionalInfo(address.getAdditionalInfo());
         return addressDTO;
     }
 
@@ -67,6 +70,20 @@ public final class AddressConverter {
 		addressDTO.setLocation(geoLocation);
 
 		return addressDTO;
+	}
+
+	public static Address update(Address oldAddress, AddressDTO newAddress) {
+		GeoLocationDTO location = newAddress.getLocation();
+		if (Objects.nonNull(location) && Objects.nonNull(location.getLatitude()) && Objects.nonNull(location.getLongitude())) {
+			GeoJsonPoint geoJsonPoint = new GeoJsonPoint(location.getLatitude(), location.getLongitude());
+			Optional.of(geoJsonPoint).ifPresent(oldAddress::setLocation);
+		}
+		Optional.ofNullable(newAddress.getStreet()).ifPresent(oldAddress::setStreet);
+		Optional.ofNullable(newAddress.getDistrict()).ifPresent(oldAddress::setDistrict);
+		Optional.ofNullable(newAddress.getZipcode()).ifPresent(oldAddress::setZipcode);
+		Optional.ofNullable(newAddress.getCity()).ifPresent(oldAddress::setCity);
+		Optional.ofNullable(newAddress.getState()).ifPresent(oldAddress::setState);
+		return oldAddress;
 	}
 
 }

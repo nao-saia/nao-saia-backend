@@ -47,7 +47,7 @@ public class AuthService {
                             u.setPassword(passwordEncoder.encode(u.getPassword()));
                             return u;
                         })
-                        .flatMap(userToBeSaved -> userRepository.save(userToBeSaved))
+                        .flatMap(userRepository::save)
                         )
                 .cast(User.class);
     }

@@ -26,10 +26,6 @@ public class CityService {
                 .switchIfEmpty(Mono.error(new CityNotFoundException(id)));
     }
 
-    public Flux<CityDTO> findAll() {
-        return cityRepository.findAll()
-                .map(cityConverter::fromDomainToDTO);
-    }
     public Flux<CityDTO> findByUF(final String uf) {
         return cityRepository.findByStateUf(uf)
                 .map(cityConverter::fromDomainToDTO);
