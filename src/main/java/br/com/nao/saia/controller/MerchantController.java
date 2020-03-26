@@ -35,11 +35,6 @@ public class MerchantController {
         this.merchantService = merchantService;
     }
 
-    @GetMapping
-    public Flux<MerchantDTO> findAll() {
-        return merchantService.findAll();
-    }
-
     @GetMapping("{id}")
     public Mono<MerchantDTO> findById(@PathVariable final UUID id) {
         return merchantService.findById(id);
