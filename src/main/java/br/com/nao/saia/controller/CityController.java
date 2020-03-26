@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.constraints.NotBlank;
+
 @RestController
 @RequestMapping("cities")
 public class CityController {
@@ -24,11 +26,8 @@ public class CityController {
     }
 
     @GetMapping
-    public Flux<CityDTO> findAll(@RequestParam(required = false) final String uf) {
-    	if (uf != null && !uf.isEmpty()) {
-    		return cityService.findByUF(uf);
-    	}
-        return cityService.findAll();
+    public Flux<CityDTO> findByFilter(@RequestParam @NotBlank final String uf) {
+        return cityService.findByUF(uf);
     }
 
     @GetMapping("/{id}")

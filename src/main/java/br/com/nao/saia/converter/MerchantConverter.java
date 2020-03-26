@@ -1,7 +1,12 @@
 package br.com.nao.saia.converter;
 
 import br.com.nao.saia.dto.MerchantDTO;
+import br.com.nao.saia.model.Address;
 import br.com.nao.saia.model.Merchant;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 
 public final class MerchantConverter {
 
@@ -56,5 +61,32 @@ public final class MerchantConverter {
         merchantDTO.setDisplayAddress(merchant.isDisplayAddress());
         merchantDTO.setNote(merchant.getNote());
         return merchantDTO;
+    }
+
+    public static Merchant update(Merchant oldMerchant, MerchantDTO newMerchant) {
+        oldMerchant.setUpdateAt(LocalDateTime.now());
+        Optional.ofNullable(newMerchant.getFantasyName()).ifPresent(oldMerchant::setFantasyName);
+        Optional.ofNullable(newMerchant.getCompanyName()).ifPresent(oldMerchant::setCompanyName);
+        Optional.ofNullable(newMerchant.getCnpj()).ifPresent(oldMerchant::setCnpj);
+
+        if (Objects.nonNull(newMerchant.getAddress())) {
+            Address addressUpdated = AddressConverter.update(oldMerchant.getAddress(), newMerchant.getAddress());
+            Optional.ofNullable(addressUpdated).ifPresent(oldMerchant::setAddress);
+        }
+
+        Optional.of(newMerchant.isAcceptTerms()).ifPresent(oldMerchant::setAcceptTerms);
+        Optional.of(newMerchant.isActive()).ifPresent(oldMerchant::setActive);
+        Optional.ofNullable(newMerchant.getLogo()).ifPresent(oldMerchant::setLogo);
+        Optional.ofNullable(newMerchant.getCategories()).ifPresent(oldMerchant::setCategories);
+        Optional.ofNullable(newMerchant.getAds()).ifPresent(oldMerchant::setAds);
+        Optional.ofNullable(newMerchant.getWhatsapp()).ifPresent(oldMerchant::setWhatsapp);
+        Optional.ofNullable(newMerchant.getPhones()).ifPresent(oldMerchant::setPhones);
+        Optional.of(newMerchant.isIfood()).ifPresent(oldMerchant::setIfood);
+        Optional.of(newMerchant.isUberEats()).ifPresent(oldMerchant::setUberEats);
+        Optional.of(newMerchant.isRappi()).ifPresent(oldMerchant::setRappi);
+        Optional.of(newMerchant.isOwnDelivery()).ifPresent(oldMerchant::setOwnDelivery);
+        Optional.of(newMerchant.isDisplayAddress()).ifPresent(oldMerchant::setDisplayAddress);
+        Optional.ofNullable(newMerchant.getNote()).ifPresent(oldMerchant::setNote);
+        return oldMerchant;
     }
 }

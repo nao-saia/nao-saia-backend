@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +77,12 @@ public class MerchantController {
     @PostMapping
     public Mono<MerchantDTO> save(@Valid @RequestBody final MerchantDTO merchantDTO) {
         return merchantService.save(merchantDTO);
+    }
+
+    @PatchMapping("{id}")
+    public Mono<MerchantDTO> update(@PathVariable final UUID id,
+                                    @RequestBody final MerchantDTO merchantDTO) {
+        return merchantService.update(id, merchantDTO);
     }
 
     @DeleteMapping("{id}")
