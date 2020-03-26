@@ -20,7 +20,12 @@ import static br.com.nao.saia.security.Constants.SIGNING_KEY;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-    public String getUsernameFromToken(String token) {
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 452064798619440695L;
+
+	public String getUsernameFromToken(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
 
