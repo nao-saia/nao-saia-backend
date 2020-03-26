@@ -22,6 +22,7 @@ public final class AddressConverter {
         address.setZipcode(addressDTO.getZipcode());
         address.setCity(addressDTO.getCity());
         address.setState(addressDTO.getState());
+        address.setAdditionalInfo(addressDTO.getAdditionalInfo());
         return address;
     }
 
@@ -33,6 +34,7 @@ public final class AddressConverter {
         addressDTO.setZipcode(address.getZipcode());
         addressDTO.setCity(address.getCity());
         addressDTO.setState(address.getState());
+        addressDTO.setAdditionalInfo(address.getAdditionalInfo());
         return addressDTO;
     }
 
