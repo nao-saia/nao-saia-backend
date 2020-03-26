@@ -2,6 +2,7 @@ package br.com.nao.saia.service;
 
 import br.com.nao.saia.converter.CategoryConverter;
 import br.com.nao.saia.dto.CategoryDTO;
+import br.com.nao.saia.exception.BusinessException;
 import br.com.nao.saia.exception.CategoryNotFoundException;
 import br.com.nao.saia.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -19,22 +20,26 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    public Flux<CategoryDTO> findAll() {
+        return categoryRepository.findAll()
+                .map(CategoryConverter::fromDomainToDTO);
+    }
+
     public Mono<CategoryDTO> findById(final UUID id) {
         return categoryRepository.findById(id)
                 .map(CategoryConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new CategoryNotFoundException(id)));
     }
 
-    public Flux<CategoryDTO> findAll() {
-        return categoryRepository.findAll()
-                .map(CategoryConverter::fromDomainToDTO);
-    }
-
     public Mono<CategoryDTO> save(final CategoryDTO categoryDTO) {
-        return Mono.just(categoryDTO)
-                .map(CategoryConverter::fromDTOToDomain)
-                .flatMap(categoryToBeSaved -> categoryRepository.save(categoryToBeSaved)
-                        .then(Mono.just(CategoryConverter.fromDomainToDTO(categoryToBeSaved))));
+        return categoryRepository.findByName(categoryDTO.getName())
+                .flatMap(category -> Mono.error(new BusinessException("Categoria já cadastrada")))
+                .switchIfEmpty(Mono.just(categoryDTO)
+                        .map(CategoryConverter::fromDTOToDomain)
+                        .flatMap(categoryToBeSaved -> categoryRepository.save(categoryToBeSaved)
+                                .flatMap(categorySaved -> Mono.just(CategoryConverter.fromDomainToDTO(categorySaved)))
+                        ))
+                .cast(CategoryDTO.class);
     }
 
 }

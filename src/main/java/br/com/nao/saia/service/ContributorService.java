@@ -1,38 +1,53 @@
 package br.com.nao.saia.service;
 
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
-import br.com.nao.saia.exception.CategoryNotFoundException;
-import br.com.nao.saia.model.Contributor;
+import br.com.nao.saia.converter.ContributorConverter;
+import br.com.nao.saia.dto.ContributorDTO;
+import br.com.nao.saia.exception.BusinessException;
+import br.com.nao.saia.exception.ContributorNotFoundException;
 import br.com.nao.saia.repository.ContributorRepository;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @Service
 public class ContributorService {
 
-	private final ContributorRepository repository;
+    private final ContributorRepository contributorRepository;
 
-	public ContributorService(ContributorRepository repository) {
-		this.repository = repository;
-	}
-
-	public Flux<Contributor> findAll() {
-		return repository.findAll();
-	}
-	
-	public Mono<Contributor> findById(final UUID id) {
-        return repository.findById(id)
-                .switchIfEmpty(Mono.error(new CategoryNotFoundException(id)));
+    public ContributorService(ContributorRepository contributorRepository) {
+        this.contributorRepository = contributorRepository;
     }
 
-
-    public Mono<Contributor> save(final Contributor contributor) {
-        return Mono.just(contributor)
-                .flatMap(contributorToBeSaved -> repository.save(contributorToBeSaved)
-                        .then(Mono.just(contributorToBeSaved)));
+    public Flux<ContributorDTO> findAll() {
+        return contributorRepository.findAll()
+                .map(ContributorConverter::fromDomainToDTO);
     }
 
+    public Mono<ContributorDTO> findById(final UUID id) {
+        return contributorRepository.findById(id)
+                .map(ContributorConverter::fromDomainToDTO)
+                .switchIfEmpty(Mono.error(new ContributorNotFoundException(id)));
+    }
+
+    public Mono<ContributorDTO> update(UUID id, ContributorDTO contributorDTO) {
+        return contributorRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ContributorNotFoundException(id)))
+                .map(contributor -> ContributorConverter.update(contributor, contributorDTO))
+                .flatMap(contributorToBeSaved -> contributorRepository.save(contributorToBeSaved)
+                        .flatMap(contributorSaved -> Mono.just(ContributorConverter.fromDomainToDTO(contributorSaved)))
+                );
+    }
+
+    public Mono<ContributorDTO> save(final ContributorDTO contributorDTO) {
+        return contributorRepository.findByName(contributorDTO.getName())
+                .flatMap(contributor -> Mono.error(new BusinessException("Contribuidor já cadastrado")))
+                .switchIfEmpty(Mono.just(contributorDTO)
+                        .map(ContributorConverter::fromDTOToDomain)
+                        .flatMap(contributorToBeSaved -> contributorRepository.save(contributorToBeSaved)
+                                .flatMap(contributorSaved -> Mono.just(ContributorConverter.fromDomainToDTO(contributorSaved)))
+                        ))
+                .cast(ContributorDTO.class);
+    }
 }

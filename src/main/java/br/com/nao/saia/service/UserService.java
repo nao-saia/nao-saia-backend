@@ -18,11 +18,13 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public Mono<User> findById(final UUID id) {
-		return userRepository.findById(id).switchIfEmpty(Mono.error(new UserNotFoundException(id)));
-	}
-
 	public Flux<User> findAll() {
 		return userRepository.findAll();
 	}
+
+	public Mono<User> findById(final UUID id) {
+		return userRepository.findById(id)
+				.switchIfEmpty(Mono.error(new UserNotFoundException(id)));
+	}
+
 }
