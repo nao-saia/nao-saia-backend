@@ -35,6 +35,7 @@ public final class MerchantConverter {
         merchant.setOwnDelivery(merchantDTO.isOwnDelivery());
         merchant.setDisplayAddress(merchantDTO.isDisplayAddress());
         merchant.setNote(merchantDTO.getNote());
+        merchant.setUserId(merchantDTO.getUserId());
         return merchant;
     }
 
@@ -60,6 +61,7 @@ public final class MerchantConverter {
         merchantDTO.setOwnDelivery(merchant.isOwnDelivery());
         merchantDTO.setDisplayAddress(merchant.isDisplayAddress());
         merchantDTO.setNote(merchant.getNote());
+        merchantDTO.setUserId(merchant.getUserId());
         return merchantDTO;
     }
 
@@ -87,6 +89,7 @@ public final class MerchantConverter {
         Optional.of(newMerchant.isOwnDelivery()).ifPresent(oldMerchant::setOwnDelivery);
         Optional.of(newMerchant.isDisplayAddress()).ifPresent(oldMerchant::setDisplayAddress);
         Optional.ofNullable(newMerchant.getNote()).ifPresent(oldMerchant::setNote);
+        Optional.ofNullable(newMerchant.getUserId()).ifPresent(oldMerchant::setUserId);
         return oldMerchant;
     }
 }
