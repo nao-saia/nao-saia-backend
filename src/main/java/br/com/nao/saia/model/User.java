@@ -1,29 +1,40 @@
 package br.com.nao.saia.model;
 
-import br.com.nao.saia.security.model.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.com.nao.saia.security.model.Role;
 
 @Document(collection = "users")
 public class User extends EntitySupport implements UserDetails {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4578589115442101344L;
 
 	@NotNull(message = "Nome do usuário é obrigatório")
 	private String name;
 
 	@Indexed
+	@NotNull(message = "Email é obrigatório")
 	private String username;
 
+	@NotNull(message = "Senha é obrigatório")
 	private String password;
 
 	private Boolean enabled;
@@ -31,6 +42,7 @@ public class User extends EntitySupport implements UserDetails {
 	@AssertTrue(message = "Usuário não aceitou termos de compromisso e privacidade")
 	private Boolean acceptTerms;
 
+	@NotEmpty(message = "Roles é obrigatório")
 	private List<Role> roles;
 
 	public String getName() {
@@ -105,5 +117,4 @@ public class User extends EntitySupport implements UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 }

@@ -1,13 +1,16 @@
 package br.com.nao.saia.service;
 
+import java.time.LocalDateTime;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import br.com.nao.saia.exception.BusinessException;
 import br.com.nao.saia.model.User;
 import br.com.nao.saia.repository.UserRepository;
 import br.com.nao.saia.security.JwtTokenUtil;
 import br.com.nao.saia.security.model.AuthRequest;
 import br.com.nao.saia.security.model.AuthResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -39,12 +42,13 @@ public class AuthService {
                 .flatMap(u -> Mono.error(new BusinessException("Usuário já cadastrado")))
                 .switchIfEmpty(Mono.just(user)
                         .map(u -> {
+                        	u.setEnabled(true);
+                        	u.setCreatedAt(LocalDateTime.now());
                             u.setPassword(passwordEncoder.encode(u.getPassword()));
                             return u;
                         })
-                        .flatMap(userToBeSaved -> userRepository.save(userToBeSaved)
-                                .flatMap(Mono::just)
-                        ))
+                        .flatMap(userToBeSaved -> userRepository.save(userToBeSaved))
+                        )
                 .cast(User.class);
     }
 
