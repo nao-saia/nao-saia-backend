@@ -30,7 +30,7 @@ public class AuthService {
         return userRepository.findByUsername(loginRequest.getUsername())
                 .map(user -> {
                     if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                        return new AuthResponse(jwtTokenUtil.generateToken(user));
+                        return new AuthResponse(jwtTokenUtil.generateToken(user), user);
                     }
                     throw new BusinessException("Senha incorreta");
                 })
