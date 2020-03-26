@@ -1,5 +1,6 @@
 package br.com.nao.saia.model;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -42,7 +43,8 @@ public class Merchant extends EntitySupport {
     private Boolean displayAddress;
     
     private String note;
-    
+
+    @Indexed
     private UUID userId;
 
     public String getFantasyName() {

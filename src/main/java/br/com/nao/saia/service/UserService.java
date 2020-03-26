@@ -4,7 +4,6 @@ import br.com.nao.saia.exception.UserNotFoundException;
 import br.com.nao.saia.model.User;
 import br.com.nao.saia.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -16,10 +15,6 @@ public class UserService {
 
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
-	}
-
-	public Flux<User> findAll() {
-		return userRepository.findAll();
 	}
 
 	public Mono<User> findById(final UUID id) {

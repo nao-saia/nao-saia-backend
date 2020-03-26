@@ -1,14 +1,9 @@
 package br.com.nao.saia.controller;
 
-import static br.com.nao.saia.service.PageSupport.DEFAULT_PAGE_SIZE;
-import static br.com.nao.saia.service.PageSupport.FIRST_PAGE_NUM;
-
-import java.util.UUID;
-
-import javax.validation.Valid;
-
+import br.com.nao.saia.dto.MerchantDTO;
+import br.com.nao.saia.service.MerchantService;
+import br.com.nao.saia.service.PageSupport;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import br.com.nao.saia.dto.MerchantDTO;
-import br.com.nao.saia.service.MerchantService;
-import br.com.nao.saia.service.PageSupport;
 import reactor.core.publisher.Mono;
+
+import javax.validation.Valid;
+import java.util.UUID;
+
+import static br.com.nao.saia.service.PageSupport.DEFAULT_PAGE_SIZE;
+import static br.com.nao.saia.service.PageSupport.FIRST_PAGE_NUM;
 
 @RestController
 @RequestMapping("merchants")
@@ -53,7 +50,6 @@ public class MerchantController {
     }
 
     @GetMapping("/owner/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public Mono<PageSupport<MerchantDTO>> findByUserId(@RequestParam(name = "page", defaultValue = FIRST_PAGE_NUM) Integer page,
                                                        @RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size,
                                                        @PathVariable("id") UUID userId) {
@@ -61,20 +57,17 @@ public class MerchantController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public Mono<MerchantDTO> save(@Valid @RequestBody final MerchantDTO merchantDTO) {
         return merchantService.save(merchantDTO);
     }
 
     @PatchMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public Mono<MerchantDTO> update(@PathVariable final UUID id,
                                     @RequestBody final MerchantDTO merchantDTO) {
         return merchantService.update(id, merchantDTO);
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public Mono<MerchantDTO> delete(@PathVariable final UUID id) {
         return merchantService.deleteById(id);
     }

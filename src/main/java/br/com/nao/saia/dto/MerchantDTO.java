@@ -1,30 +1,35 @@
 package br.com.nao.saia.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class MerchantDTO implements Serializable {
 
-    /**
-	 *
-	 */
 	private static final long serialVersionUID = 3284286143169387784L;
+
 	private UUID id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateAt;
+    @NotNull(message = "Nome fantasia é obrigatório")
     private String fantasyName;
+    @NotNull(message = "Nome da empresa é obrigatório")
     private String companyName;
     private String cnpj;
     private AddressDTO address;
+    @AssertTrue(message = "É preciso aceitar os termos")
     private boolean acceptTerms;
     private boolean active;
     private String logo;
+    @NotEmpty(message = "Categorias é obrigatório")
     private List<String> categories;
     private List<String> ads;
     private String whatsapp;
@@ -35,6 +40,8 @@ public class MerchantDTO implements Serializable {
     private boolean ownDelivery;
     private boolean displayAddress;
     private String note;
+
+    @NotNull(message = "ID do usuário é obrigatório")
     private UUID userId;
 
     public UUID getId() {

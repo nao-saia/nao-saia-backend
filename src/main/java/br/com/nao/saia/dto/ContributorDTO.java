@@ -2,12 +2,14 @@ package br.com.nao.saia.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ContributorDTO {
 
     private UUID id;
+    @NotNull(message = "Nome é obrigatório")
     private String name;
     private String description;
     private String instagram;

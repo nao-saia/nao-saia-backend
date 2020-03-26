@@ -1,13 +1,19 @@
 package br.com.nao.saia.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class StateDTO {
 
+    @NotNull(message = "Código do IBGE é obrigatório")
     private Integer codeIbge;
 
+    @NotNull(message = "Nome é obrigatório")
     private String name;
 
+    @NotNull(message = "UF é obrigatório")
     private String uf;
 
+    @NotNull(message = "País é obrigatório")
     private String country;
 
     public StateDTO() {

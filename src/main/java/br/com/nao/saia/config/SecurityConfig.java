@@ -17,6 +17,9 @@ import reactor.core.publisher.Mono;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    private static final String ADMIN = "ADMIN";
+    private static final String OWNER = "OWNER";
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -25,7 +28,12 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
-        String[] patterns = new String[]{"/auth/**", "/categories/**", "/states/**", "/cities/**", "/geolocation/**",  "/merchants/**",  "/contributors/**"};
+        String[] patterns = new String[]{
+                "/auth/**",
+                "/cities/**",
+                "/states/**",
+                "/geolocation/**"
+        };
         return http.cors()
                 .and()
                 .exceptionHandling()
@@ -36,6 +44,16 @@ public class SecurityConfig {
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
+                .pathMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                .pathMatchers(HttpMethod.POST, "/categories").hasRole(ADMIN)
+                .pathMatchers(HttpMethod.GET, "/contributors/**").permitAll()
+                .pathMatchers(HttpMethod.PATCH, "/contributors/**").hasRole(ADMIN)
+                .pathMatchers(HttpMethod.POST, "/contributors").hasRole(ADMIN)
+                .pathMatchers(HttpMethod.GET, "/merchants/owner/**").hasAnyRole(ADMIN, OWNER)
+                .pathMatchers(HttpMethod.GET, "/merchants/**").permitAll()
+                .pathMatchers(HttpMethod.POST, "/merchants").hasAnyRole(ADMIN, OWNER)
+                .pathMatchers(HttpMethod.PATCH, "/merchants").hasAnyRole(ADMIN, OWNER)
+                .pathMatchers(HttpMethod.DELETE, "/merchants").hasAnyRole(ADMIN, OWNER)
                 .pathMatchers(patterns).permitAll()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyExchange().authenticated()

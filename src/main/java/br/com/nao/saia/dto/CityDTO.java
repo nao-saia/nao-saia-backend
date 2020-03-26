@@ -1,11 +1,14 @@
 package br.com.nao.saia.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class CityDTO {
 
+    @NotNull(message = "Código do IBGE é obrigatório")
     private Integer codeIbge;
-
+    @NotNull(message = "Nome é obrigatório")
     private String name;
-
+    @NotNull(message = "Id do estado é obrigatório")
     private Integer stateId;
 
     public CityDTO() {
