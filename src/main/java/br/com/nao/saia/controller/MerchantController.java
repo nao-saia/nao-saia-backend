@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.nao.saia.dto.MerchantDTO;
 import br.com.nao.saia.service.MerchantService;
 import br.com.nao.saia.service.PageSupport;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -51,6 +50,14 @@ public class MerchantController {
                                                        @RequestParam(name = "page", defaultValue = FIRST_PAGE_NUM) Integer page,
                                                        @RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size) {
         return merchantService.findByFilter(fantasyName, category, city, state, latitude, longitude, distance, PageRequest.of(page, size));
+    }
+
+    @GetMapping("/owner/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
+    public Mono<PageSupport<MerchantDTO>> findByUserId(@RequestParam(name = "page", defaultValue = FIRST_PAGE_NUM) Integer page,
+                                                       @RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size,
+                                                       @PathVariable("id") UUID userId) {
+    	return merchantService.findByUserId(userId, PageRequest.of(page, size));
     }
 
     @PostMapping

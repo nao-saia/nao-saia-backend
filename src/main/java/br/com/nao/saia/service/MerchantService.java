@@ -173,4 +173,15 @@ public class MerchantService {
         });
         return merchant;
     }
+
+    public Mono<PageSupport<MerchantDTO>> findByUserId(final UUID userId, final Pageable pageable) {
+        return merchantRepository.findByUserId(userId)
+        		.collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                                .stream()
+                                .map(MerchantConverter::fromDomainToDTO)
+                                .collect(Collectors.toList()),
+                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
+    }
 }
