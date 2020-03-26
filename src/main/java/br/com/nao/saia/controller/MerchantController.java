@@ -33,7 +33,6 @@ public class MerchantController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public Flux<MerchantDTO> findAll() {
         return merchantService.findAll();
     }
@@ -74,13 +73,14 @@ public class MerchantController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public Mono<MerchantDTO> save(@Valid @RequestBody final MerchantDTO merchantDTO) {
         return merchantService.save(merchantDTO);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public Mono<MerchantDTO> delete(@PathVariable final UUID id) {
         return merchantService.deleteById(id);
     }
-
 }
