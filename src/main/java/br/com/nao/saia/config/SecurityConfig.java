@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
-        String[] patterns = new String[]{"/auth/**", "/categories/**", "/states/**", "/cities/**", "/geolocation/**",  "/merchants/**"};
+        String[] patterns = new String[]{"/auth/**", "/categories/**", "/states/**", "/cities/**", "/geolocation/**",  "/merchants/**",  "/contributors/**"};
         return http.cors()
                 .and()
                 .exceptionHandling()
