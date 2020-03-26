@@ -17,9 +17,9 @@ public class Merchant extends EntitySupport {
     
     private Address address;
     
-    private boolean acceptTerms;
+    private Boolean acceptTerms;
     
-    private boolean active;
+    private Boolean active;
     
     private String logo;
     
@@ -31,20 +31,20 @@ public class Merchant extends EntitySupport {
     
     private List<String> phones;
     
-    private boolean ifood;
+    private Boolean ifood;
     
-    private boolean uberEats;
+    private Boolean uberEats;
     
-    private boolean rappi;
+    private Boolean rappi;
     
-    private boolean ownDelivery;
+    private Boolean ownDelivery;
     
-    private boolean displayAddress;
+    private Boolean displayAddress;
     
     private String note;
     
     private UUID userId;
-    
+
     public String getFantasyName() {
         return fantasyName;
     }
@@ -77,19 +77,19 @@ public class Merchant extends EntitySupport {
         this.address = address;
     }
     
-    public boolean isAcceptTerms() {
+    public Boolean isAcceptTerms() {
         return acceptTerms;
     }
     
-    public void setAcceptTerms(boolean acceptTerms) {
+    public void setAcceptTerms(Boolean acceptTerms) {
         this.acceptTerms = acceptTerms;
     }
     
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
     
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
     
@@ -133,39 +133,39 @@ public class Merchant extends EntitySupport {
         this.phones = phones;
     }
     
-    public boolean isIfood() {
+    public Boolean isIfood() {
         return ifood;
     }
     
-    public void setIfood(boolean ifood) {
+    public void setIfood(Boolean ifood) {
         this.ifood = ifood;
     }
     
-    public boolean isUberEats() {
+    public Boolean isUberEats() {
         return uberEats;
     }
     
-    public void setUberEats(boolean uberEats) {
+    public void setUberEats(Boolean uberEats) {
         this.uberEats = uberEats;
     }
     
-    public boolean isRappi() {
+    public Boolean isRappi() {
         return rappi;
     }
     
-    public void setRappi(boolean rappi) {
+    public void setRappi(Boolean rappi) {
         this.rappi = rappi;
     }
     
-    public boolean isOwnDelivery() {
+    public Boolean isOwnDelivery() {
         return ownDelivery;
     }
     
-    public void setOwnDelivery(boolean ownDelivery) {
+    public void setOwnDelivery(Boolean ownDelivery) {
         this.ownDelivery = ownDelivery;
     }
     
-    public boolean isDisplayAddress() {
+    public Boolean isDisplayAddress() {
         return displayAddress;
     }
     
@@ -177,7 +177,7 @@ public class Merchant extends EntitySupport {
         this.note = note;
     }
     
-    public void setDisplayAddress(boolean displayAddress) {
+    public void setDisplayAddress(Boolean displayAddress) {
         this.displayAddress = displayAddress;
     }
     

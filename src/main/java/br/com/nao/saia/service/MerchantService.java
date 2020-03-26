@@ -4,7 +4,11 @@ import br.com.nao.saia.converter.MerchantConverter;
 import br.com.nao.saia.dto.MerchantDTO;
 import br.com.nao.saia.exception.BusinessException;
 import br.com.nao.saia.exception.MerchantNotFoundException;
+import br.com.nao.saia.model.Address;
+import br.com.nao.saia.model.Merchant;
 import br.com.nao.saia.repository.MerchantRepository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
@@ -13,9 +17,13 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
 @Service
 public class MerchantService {
@@ -77,9 +85,9 @@ public class MerchantService {
                 .collectList()
                 .map(list -> new PageSupport<>(
                         list
-                            .stream()
-                            .map(MerchantConverter::fromDomainToDTO)
-                            .collect(Collectors.toList()),
+                                .stream()
+                                .map(MerchantConverter::fromDomainToDTO)
+                                .collect(Collectors.toList()),
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
 
@@ -111,4 +119,58 @@ public class MerchantService {
                         .then(Mono.just(MerchantConverter.fromDomainToDTO(productToBeDeleted))));
     }
 
+    public Mono<PageSupport<MerchantDTO>> findByFilter(final String fantasyName,
+                                                       final String category,
+                                                       final String city,
+                                                       final String state,
+                                                       final Double latitude,
+                                                       final Double longitude,
+                                                       final Double distance,
+                                                       final Pageable pageable) {
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("fantasyName", contains().ignoreCase())
+                .withMatcher("categories", contains().ignoreCase());
+
+        Merchant merchant = buildMerchantForQuery(fantasyName, category, city, state);
+
+        Example<Merchant> example = Example.of(merchant, matcher);
+
+        if (Objects.nonNull(latitude) && Objects.nonNull(longitude)) {
+            return findByLocation(latitude, longitude, distance, pageable);
+        }
+
+        return merchantRepository.findAll(example)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                                .stream()
+                                .map(MerchantConverter::fromDomainToDTO)
+                                .collect(Collectors.toList()),
+                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
+    }
+
+    private Merchant buildMerchantForQuery(final String fantasyName,
+                                           final String category,
+                                           final String city,
+                                           final String state) {
+        Merchant merchant = new Merchant();
+        Optional.ofNullable(fantasyName).ifPresent(merchant::setFantasyName);
+        Optional.ofNullable(category).ifPresent(c -> merchant.setCategories(Collections.singletonList(c)));
+        Optional.ofNullable(state).ifPresent(s -> {
+            Address address = new Address();
+            address.setState(s);
+            merchant.setAddress(address);
+        });
+        Optional.ofNullable(city).ifPresent(c -> {
+            Address address = new Address();
+            address.setCity(c);
+            merchant.setAddress(address);
+        });
+        Optional.ofNullable(city).ifPresent(c -> {
+            Address address = new Address();
+            address.setCity(c);
+            merchant.setAddress(address);
+        });
+        return merchant;
+    }
 }
