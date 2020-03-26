@@ -2,11 +2,6 @@
 
 [![Build Status](https://travis-ci.com/isaiastavares/nao-saia-backend.svg?branch=master)](https://travis-ci.com/isaiastavares/nao-saia-backend)
 
-### Prerequisites
-
-* Java 8
-
-
 Nós somos uma ponte para levar o que você precisa até a sua casa.
 Encontre o que você precisa durante esta quarentena e evite contaminar-se com o COVID-19 (coronavírus).
 
@@ -23,3 +18,8 @@ Geração de vendas e exposição da sua marca ou produto de forma positiva e as
 Agregamos o máximo de deliveries em um só lugar, assim é criado uma corrente do bem, facilitando o comércio e ativando a economia em tempos de coronavírus.
 
 Template utilizado: https://www.creative-tim.com/product/argon-design-system-angular with MIT License
+
+### Prerequisites
+
+* Java 8
+* Maven
