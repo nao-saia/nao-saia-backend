@@ -13,6 +13,8 @@ public class AddressDTO {
     private String district;
 
     private String zipcode;
+    
+    private String additionalInfo;
 
     public GeoLocationDTO getLocation() {
         return location;
@@ -61,4 +63,14 @@ public class AddressDTO {
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
+
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+
+	public void setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
+    
+    
 }
