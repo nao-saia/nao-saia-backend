@@ -16,6 +16,7 @@ public class ContributorDTO {
     private String facebook;
     private String linkedin;
     private String twitter;
+    private String github;
     private String image;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
@@ -76,6 +77,14 @@ public class ContributorDTO {
 
     public void setTwitter(String twitter) {
         this.twitter = twitter;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
     }
 
     public String getImage() {

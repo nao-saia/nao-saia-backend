@@ -20,6 +20,7 @@ public final class ContributorConverter {
         contributor.setFacebook(contributorDTO.getFacebook());
         contributor.setLinkedin(contributorDTO.getLinkedin());
         contributor.setTwitter(contributorDTO.getTwitter());
+        contributor.setGithub(contributorDTO.getGithub());
         contributor.setImage(contributorDTO.getImage());
         return contributor;
     }
@@ -33,6 +34,7 @@ public final class ContributorConverter {
         contributorDTO.setFacebook(contributor.getFacebook());
         contributorDTO.setLinkedin(contributor.getLinkedin());
         contributorDTO.setTwitter(contributor.getTwitter());
+        contributorDTO.setGithub(contributor.getGithub());
         contributorDTO.setImage(contributor.getImage());
         contributorDTO.setCreatedAt(contributor.getCreatedAt());
         contributorDTO.setUpdateAt(contributor.getUpdateAt());
@@ -48,6 +50,7 @@ public final class ContributorConverter {
         Optional.ofNullable(newContributor.getFacebook()).ifPresent(oldContributor::setFacebook);
         Optional.ofNullable(newContributor.getLinkedin()).ifPresent(oldContributor::setLinkedin);
         Optional.ofNullable(newContributor.getTwitter()).ifPresent(oldContributor::setTwitter);
+        Optional.ofNullable(newContributor.getGithub()).ifPresent(oldContributor::setGithub);
         Optional.ofNullable(newContributor.getImage()).ifPresent(oldContributor::setImage);
         return oldContributor;
     }
