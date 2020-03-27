@@ -27,7 +27,7 @@ public class CityService {
     }
 
     public Flux<CityDTO> findByUF(final String uf) {
-        return cityRepository.findByStateUf(uf)
+        return cityRepository.findByStateUfOrderByNameAsc(uf)
                 .map(cityConverter::fromDomainToDTO);
     }
 

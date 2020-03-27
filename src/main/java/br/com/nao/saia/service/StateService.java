@@ -30,7 +30,7 @@ public class StateService {
     }
 
     public Flux<StateDTO> findAll() {
-        return stateRepository.findAll()
+        return stateRepository.findAllByOrderByNameAsc()
                 .map(StateConverter::fromDomainToDTO);
     }
 
