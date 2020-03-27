@@ -11,6 +11,7 @@ public class Contributor extends EntitySupport {
 	private String facebook;
 	private String linkedin;
 	private String twitter;
+	private String github;
 	private String image;
 
 	public String getName() {
@@ -59,6 +60,14 @@ public class Contributor extends EntitySupport {
 
 	public void setTwitter(String twitter) {
 		this.twitter = twitter;
+	}
+
+	public String getGithub() {
+		return github;
+	}
+
+	public void setGithub(String github) {
+		this.github = github;
 	}
 
 	public String getImage() {
