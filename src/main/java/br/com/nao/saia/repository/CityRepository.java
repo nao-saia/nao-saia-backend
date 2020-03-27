@@ -6,5 +6,5 @@ import reactor.core.publisher.Flux;
 
 public interface CityRepository extends ReactiveMongoRepository<City, Integer> {
 	
-	Flux<City> findByStateUf(String uf);
+	Flux<City> findByStateUfOrderByNameAsc(String uf);
 }
