@@ -1,16 +1,13 @@
 package br.com.nao.saia.config;
 
-import com.sun.org.apache.xerces.internal.parsers.SecurityConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @Configuration
 @EnableWebFlux
-@Import({SecurityConfiguration.class})
-class ServicesConfiguration implements WebFluxConfigurer {
+class WebFluxConfig implements WebFluxConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

@@ -31,10 +31,20 @@ public class ContributorService {
                 .switchIfEmpty(Mono.error(new ContributorNotFoundException(id)));
     }
 
-    public Mono<ContributorDTO> update(UUID id, ContributorDTO contributorDTO) {
+    public Mono<ContributorDTO> patch(UUID id, ContributorDTO contributorDTO) {
         return contributorRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ContributorNotFoundException(id)))
                 .map(contributor -> ContributorConverter.update(contributor, contributorDTO))
+                .flatMap(contributorToBeSaved -> contributorRepository.save(contributorToBeSaved)
+                        .flatMap(contributorSaved -> Mono.just(ContributorConverter.fromDomainToDTO(contributorSaved)))
+                );
+    }
+
+    public Mono<ContributorDTO> update(ContributorDTO contributorDTO) {
+        return contributorRepository.findById(contributorDTO.getId())
+                .switchIfEmpty(Mono.error(new ContributorNotFoundException(contributorDTO.getId())))
+                .then(Mono.just(contributorDTO))
+                .map(ContributorConverter::fromDTOToDomain)
                 .flatMap(contributorToBeSaved -> contributorRepository.save(contributorToBeSaved)
                         .flatMap(contributorSaved -> Mono.just(ContributorConverter.fromDomainToDTO(contributorSaved)))
                 );

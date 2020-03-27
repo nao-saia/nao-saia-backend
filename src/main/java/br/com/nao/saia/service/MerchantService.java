@@ -82,10 +82,31 @@ public class MerchantService {
                         pageable.getPageNumber(), pageable.getPageSize(), list.size()));
     }
 
-    public Mono<MerchantDTO> update(UUID id, MerchantDTO merchantDTO) {
+    public Mono<PageSupport<MerchantDTO>> findByUserId(final UUID userId, final Pageable pageable) {
+        return merchantRepository.findByUserId(userId)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                                .stream()
+                                .map(MerchantConverter::fromDomainToDTO)
+                                .collect(Collectors.toList()),
+                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
+    }
+
+    public Mono<MerchantDTO> patch(UUID id, MerchantDTO merchantDTO) {
         return merchantRepository.findById(id)
                 .switchIfEmpty(Mono.error(new MerchantNotFoundException(id)))
                 .map(merchant -> MerchantConverter.update(merchant, merchantDTO))
+                .flatMap(merchantToBeSaved -> merchantRepository.save(merchantToBeSaved)
+                        .flatMap(merchantSaved -> Mono.just(MerchantConverter.fromDomainToDTO(merchantSaved)))
+                );
+    }
+
+    public Mono<MerchantDTO> update(MerchantDTO merchantDTO) {
+        return merchantRepository.findById(merchantDTO.getId())
+                .switchIfEmpty(Mono.error(new MerchantNotFoundException(merchantDTO.getId())))
+                .then(Mono.just(merchantDTO))
+                .map(MerchantConverter::fromDTOToDomain)
                 .flatMap(merchantToBeSaved -> merchantRepository.save(merchantToBeSaved)
                         .flatMap(merchantSaved -> Mono.just(MerchantConverter.fromDomainToDTO(merchantSaved)))
                 );
@@ -135,14 +156,4 @@ public class MerchantService {
         return merchant;
     }
 
-    public Mono<PageSupport<MerchantDTO>> findByUserId(final UUID userId, final Pageable pageable) {
-        return merchantRepository.findByUserId(userId)
-        		.collectList()
-                .map(list -> new PageSupport<>(
-                        list
-                                .stream()
-                                .map(MerchantConverter::fromDomainToDTO)
-                                .collect(Collectors.toList()),
-                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
-    }
 }

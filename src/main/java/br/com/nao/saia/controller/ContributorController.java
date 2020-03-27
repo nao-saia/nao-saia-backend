@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,9 +37,14 @@ public class ContributorController {
     }
 
     @PatchMapping("{id}")
-    public Mono<ContributorDTO> update(@PathVariable final UUID id,
-                                       @RequestBody final ContributorDTO contributorDTO) {
-        return service.update(id, contributorDTO);
+    public Mono<ContributorDTO> patch(@PathVariable final UUID id,
+                                      @RequestBody final ContributorDTO contributorDTO) {
+        return service.patch(id, contributorDTO);
+    }
+
+    @PutMapping
+    public Mono<ContributorDTO> update(@Valid @RequestBody final ContributorDTO contributorDTO) {
+        return service.update(contributorDTO);
     }
 
     @PostMapping
