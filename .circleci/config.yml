@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Instalando dependencias
+          command: |
+            apk add maven openjdk8 xmlstarlet --update
+      - run:
+          name: Build project
+          command: |
+            mvn clean install
+      - run:
+          name: Build docker imagem
+          command: |
+            cp target/*.jar ci/nao-saia.jar
+            docker build -t app ci/
+      - run:
+          name: Login no docker hub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+      - deploy:
+          name: Push app no hub
+          command: |
+            VERSION=$(xmlstarlet sel -t -v "/_:project/_:version" pom.xml)
+            docker tag app naosaiacovid19/nao-saia:$VERSION
+            docker push naosaiacovid19/nao-saia:$VERSION
