@@ -19,7 +19,7 @@ jobs:
           name: Build docker imagem
           command: |
             cp target/*.jar ci/nao-saia.jar
-            docker build -t app .
+            docker build -t app ci/
       - run:
           name: Login no docker hub
           command: |
