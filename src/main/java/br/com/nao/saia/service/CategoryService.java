@@ -21,7 +21,7 @@ public class CategoryService {
     }
 
     public Flux<CategoryDTO> findAll() {
-        return categoryRepository.findAll()
+        return categoryRepository.findAllByOrderByHighlightedDescNameAsc()
                 .map(CategoryConverter::fromDomainToDTO);
     }
 
@@ -29,6 +29,16 @@ public class CategoryService {
         return categoryRepository.findById(id)
                 .map(CategoryConverter::fromDomainToDTO)
                 .switchIfEmpty(Mono.error(new CategoryNotFoundException(id)));
+    }
+
+    public Mono<CategoryDTO> update(CategoryDTO categoryDTO) {
+        return categoryRepository.findById(categoryDTO.getId())
+                .switchIfEmpty(Mono.error(new CategoryNotFoundException(categoryDTO.getId())))
+                .then(Mono.just(categoryDTO))
+                .map(CategoryConverter::fromDTOToDomain)
+                .flatMap(categoryToBeSaved -> categoryRepository.save(categoryToBeSaved)
+                        .flatMap(categorySaved -> Mono.just(CategoryConverter.fromDomainToDTO(categorySaved)))
+                );
     }
 
     public Mono<CategoryDTO> save(final CategoryDTO categoryDTO) {

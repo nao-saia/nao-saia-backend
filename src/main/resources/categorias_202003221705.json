@@ -1,20 +1,59 @@
 {
   "categorias": [
-    "Açougue",
-    "Banca de jornal",
-    "Borracharia",
-    "Coffeeshop",
-    "Cibercafé",
-    "Drogaria",
-    "Empório",
-    "Empresas",
-    "Farmácia",
-    "Loja",
-    "Mercearia",
-    "Papelaria",
-    "Pet Shop",
-    "Posto de Combustivel",
-    "Restaurante",
-    "Supermercado"
+    {
+      "name": "Açougue",
+      "image": "butchery.png",
+      "highlighted": false
+    },
+    {
+      "name": "Banca de Jornal",
+      "image": "news.png",
+      "highlighted": false
+    },
+    {
+      "name": "Borracharia",
+      "image": "tire-shop.png",
+      "highlighted": false
+    },
+    {
+      "name": "CoffeShop",
+      "image": "coffe.png",
+      "highlighted": false
+    },
+    {
+      "name": "Farmácia",
+      "image": "clinic.png",
+      "highlighted": true
+    },
+    {
+      "name": "Mercado",
+      "image": "market.png",
+      "highlighted": true
+    },
+    {
+      "name": "Empresas",
+      "image": "company.png",
+      "highlighted": true
+    },
+    {
+      "name": "Loja",
+      "image": "shop.png",
+      "highlighted": true
+    },
+    {
+      "name": "Pet Shop",
+      "image": "pet-shop.png",
+      "highlighted": true
+    },
+    {
+      "name": "Restaurante",
+      "image": "restaurant.png",
+      "highlighted": true
+    },
+    {
+      "name": "Papelaria",
+      "image": "stationers.png",
+      "highlighted": false
+    }
   ]
 }

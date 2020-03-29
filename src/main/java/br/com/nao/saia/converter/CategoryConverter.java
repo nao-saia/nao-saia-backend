@@ -12,6 +12,8 @@ public final class CategoryConverter {
         Category category = new Category();
         category.setId(categoryDTO.getId());
         category.setName(categoryDTO.getName());
+        category.setImage(categoryDTO.getImage());
+        category.setHighlighted(categoryDTO.isHighlighted());
         return category;
     }
 
@@ -19,6 +21,8 @@ public final class CategoryConverter {
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setId(category.getId());
         categoryDTO.setName(category.getName());
+        categoryDTO.setImage(category.getImage());
+        categoryDTO.setHighlighted(category.isHighlighted());
         categoryDTO.setCreatedAt(category.getCreatedAt());
         categoryDTO.setUpdateAt(category.getUpdateAt());
         return categoryDTO;

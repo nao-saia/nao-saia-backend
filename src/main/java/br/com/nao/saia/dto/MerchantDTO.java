@@ -25,7 +25,6 @@ public class MerchantDTO implements Serializable {
     private String companyName;
     private String cnpj;
     private AddressDTO address;
-    @AssertTrue(message = "É preciso aceitar os termos")
     private boolean acceptTerms;
     private boolean active;
     private String logo;

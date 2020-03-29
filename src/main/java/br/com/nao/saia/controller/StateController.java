@@ -36,7 +36,7 @@ public class StateController {
 //    public void doSomethingAfterStartup() throws IOException {
 //        String json = String.join(" ",
 //                Files.readAllLines(
-//                        Paths.get("/home/isaiasneto/Documentos/Projects/nao-saia/back-end-2/nao-saia/src/main/resources/estados_202003221427.json"),
+//                        Paths.get("/home/isaiasneto/Documentos/Projects/nao-saia-backend/src/main/resources/estados_202003221427.json"),
 //                        StandardCharsets.UTF_8));
 //
 //        List<Estado> states = new ObjectMapper().readValue(json, Estados.class).getEstados();

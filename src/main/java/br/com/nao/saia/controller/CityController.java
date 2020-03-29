@@ -39,7 +39,7 @@ public class CityController {
 //    public void doSomethingAfterStartup() throws IOException {
 //        String json = String.join(" ",
 //                Files.readAllLines(
-//                        Paths.get("/home/isaiasneto/Documentos/Projects/nao-saia/back-end-2/nao-saia/src/main/resources/cidades_202003221428.json"),
+//                        Paths.get("/home/isaiasneto/Documentos/Projects/nao-saia-backend/src/main/resources/cidades_202003221428.json"),
 //                        StandardCharsets.UTF_8));
 //
 //        List<Cidade> cities = new ObjectMapper().readValue(json, Cidades.class).getCidades();

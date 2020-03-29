@@ -1,9 +1,6 @@
-package br.com.nao.saia.model;
+package br.com.nao.saia.delete;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "categories")
-public class Category extends EntitySupport {
+public class Categoria {
 
     private String name;
     private String image;
