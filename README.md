@@ -1,6 +1,6 @@
 # Não saia!
 
-[![Build Status](https://travis-ci.com/isaiastavares/nao-saia-backend.svg?branch=master)](https://travis-ci.com/isaiastavares/nao-saia-backend)
+[![Build Status](https://travis-ci.com/nao-saia/nao-saia-backend.svg?branch=master)](https://travis-ci.com/nao-saia/nao-saia-backend)
 
 Nós somos uma ponte para levar o que você precisa até a sua casa.
 Encontre o que você precisa durante esta quarentena e evite contaminar-se com o COVID-19 (coronavírus).
