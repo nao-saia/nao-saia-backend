@@ -60,7 +60,8 @@ public class GeolocationService {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Function<Map, Mono<AddressDTO>> addressFunction = address -> {
 		Map<String, Object> cityMap = (Map) address.get("cidade");
-		return cityService.getCityThroughCityMap(cityMap)
+		int ibgeCode = Integer.parseInt((String) cityMap.get("ibge"));
+		return cityService.getCityNameById(ibgeCode)
 				.flatMap(city -> {
 					Map<String, Object> completeAddress = new HashMap<>(address);
 					completeAddress.computeIfAbsent("cityName", f -> city);
