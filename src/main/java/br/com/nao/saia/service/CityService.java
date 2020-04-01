@@ -1,10 +1,14 @@
 package br.com.nao.saia.service;
 
+import java.util.Map;
+import java.util.Objects;
+
+import org.springframework.stereotype.Service;
+
 import br.com.nao.saia.converter.CityConverter;
 import br.com.nao.saia.dto.CityDTO;
 import br.com.nao.saia.exception.CityNotFoundException;
 import br.com.nao.saia.repository.CityRepository;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,5 +41,14 @@ public class CityService {
                 .flatMap(cityToBeSaved -> cityRepository.save(cityToBeSaved)
                         .then(Mono.just(cityConverter.fromDomainToDTO(cityToBeSaved))));
     }
+
+	public Mono<String> getCityThroughCityMap(final Map<String, Object> cityMap) {
+		if (Objects.nonNull(cityMap)) {
+			int ibgeCode = Integer.parseInt((String) cityMap.get("ibge"));
+			return findById(ibgeCode)
+					.flatMap(cityDto -> Mono.just(cityDto.getName()));
+		}
+		return Mono.empty();
+	}
 
 }
