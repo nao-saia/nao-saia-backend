@@ -45,12 +45,8 @@ public final class AddressConverter {
 		String latitude = (String) address.get("latitude");
 		String longitude = (String) address.get("longitude");
 		String district = (String) address.get("bairro");
-		Map<String, Object> cityMap = (Map) address.get("cidade");
+		String city = (String) address.get("cityName");
 
-		String city = null;
-		if (cityMap != null) {
-			city = (String) cityMap.get("nome");
-		}
 		String state = null;
 		Map<String, String> stateMap = (Map) address.get("estado");
 		if ( stateMap!= null) {
