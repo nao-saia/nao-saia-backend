@@ -1,7 +1,7 @@
 package br.com.nao.saia.config;
 
-import br.com.nao.saia.security.AuthenticationManager;
-import br.com.nao.saia.security.SecurityContextRepository;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +11,12 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import br.com.nao.saia.security.AuthenticationManager;
+import br.com.nao.saia.security.SecurityContextRepository;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -37,8 +43,8 @@ public class SecurityConfig {
         return http.cors()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)
-                )).accessDeniedHandler((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN)))
+                .authenticationEntryPoint((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)))
+                .accessDeniedHandler((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN)))
                 .and()
                 .csrf().disable()
                 .authenticationManager(authenticationManager)
@@ -61,6 +67,18 @@ public class SecurityConfig {
                 .anyExchange().authenticated()
                 .and()
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(new String[] {"*"}));
+        configuration.setAllowedMethods(Arrays.asList(new String[] {"*"}));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList(new String[] {"Authorization", "Cache-Control", "Content-Type"}));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
