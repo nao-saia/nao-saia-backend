@@ -1,0 +1,28 @@
+cep:
+  aberto:
+    token: ${CEP_ABERTO_TOKEN}
+    url: ${CEP_ABERTO_URL:http://www.cepaberto.com/api/v3}
+server:
+  port: ${SERVER_PORT:8088}
+
+---
+spring:
+  profiles: prod
+  data:
+    mongodb:
+      auto-index-creation: false
+      uri: mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0-88v9v.mongodb.net/test?ssl=true&retryWrites=true&w=majority
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+---
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      auto-index-creation: false
+      uri: mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0-88v9v.mongodb.net/homolog?ssl=true&retryWrites=true&w=majority
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
