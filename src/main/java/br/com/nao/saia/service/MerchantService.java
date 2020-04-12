@@ -14,6 +14,9 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
+
+import com.mongodb.BasicDBList;
+
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -49,7 +52,8 @@ public class MerchantService {
                                                        final Pageable pageable) {
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withMatcher("fantasyName", contains().ignoreCase())
-                .withMatcher("categories", contains().ignoreCase());
+                .withMatcher("categories", match -> match.transform(categoriesOptional ->
+                	Optional.of(((BasicDBList) categoriesOptional.get()).iterator().next())).contains().ignoreCase());
 
         Merchant merchant = buildMerchantForQuery(fantasyName, category, city, state);
 
