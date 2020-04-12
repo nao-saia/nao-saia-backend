@@ -1,12 +1,14 @@
 package br.com.nao.saia.service;
 
-import br.com.nao.saia.converter.MerchantConverter;
-import br.com.nao.saia.dto.MerchantDTO;
-import br.com.nao.saia.exception.BusinessException;
-import br.com.nao.saia.exception.MerchantNotFoundException;
-import br.com.nao.saia.model.Address;
-import br.com.nao.saia.model.Merchant;
-import br.com.nao.saia.repository.MerchantRepository;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
@@ -17,15 +19,15 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.BasicDBList;
 
+import br.com.nao.saia.converter.MerchantConverter;
+import br.com.nao.saia.dto.MerchantDTO;
+import br.com.nao.saia.exception.BusinessException;
+import br.com.nao.saia.exception.MerchantNotFoundException;
+import br.com.nao.saia.model.Address;
+import br.com.nao.saia.model.Merchant;
+import br.com.nao.saia.repository.MerchantRepository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
 @Service
 public class MerchantService {
@@ -65,12 +67,7 @@ public class MerchantService {
 
         return merchantRepository.findAll(example)
                 .collectList()
-                .map(list -> new PageSupport<>(
-                        list
-                                .stream()
-                                .map(MerchantConverter::fromDomainToDTO)
-                                .collect(Collectors.toList()),
-                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
+                .flatMap(merchants -> getPageableMerchant(merchants, pageable));
     }
 
     public Mono<PageSupport<MerchantDTO>> findByLocation(final double latitude, final double longitude, final double distance, final Pageable pageable) {
@@ -78,23 +75,13 @@ public class MerchantService {
                 new Point(latitude, longitude),
                 new Distance(distance, Metrics.KILOMETERS))
                 .collectList()
-                .map(list -> new PageSupport<>(
-                        list
-                                .stream()
-                                .map(MerchantConverter::fromDomainToDTO)
-                                .collect(Collectors.toList()),
-                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
+                .flatMap(merchants -> getPageableMerchant(merchants, pageable));
     }
 
     public Mono<PageSupport<MerchantDTO>> findByUserId(final UUID userId, final Pageable pageable) {
         return merchantRepository.findByUserId(userId)
                 .collectList()
-                .map(list -> new PageSupport<>(
-                        list
-                                .stream()
-                                .map(MerchantConverter::fromDomainToDTO)
-                                .collect(Collectors.toList()),
-                        pageable.getPageNumber(), pageable.getPageSize(), list.size()));
+                .flatMap(merchants -> getPageableMerchant(merchants, pageable));
     }
 
     public Mono<MerchantDTO> patch(UUID id, MerchantDTO merchantDTO) {
@@ -105,6 +92,19 @@ public class MerchantService {
                         .flatMap(merchantSaved -> Mono.just(MerchantConverter.fromDomainToDTO(merchantSaved)))
                 );
     }
+
+	private Mono<PageSupport<MerchantDTO>> getPageableMerchant(List<Merchant> merchants, Pageable pageable) {
+    	return Flux.fromIterable(merchants)
+		    	.skip(pageable.getPageNumber() * pageable.getPageSize())
+				.take(pageable.getPageSize())
+				.collectList()
+				.flatMap(newList -> Mono.just(new PageSupport<MerchantDTO>(
+						newList
+				            .stream()
+				            .map(MerchantConverter::fromDomainToDTO)
+				            .collect(Collectors.toList()),
+					pageable.getPageNumber(), pageable.getPageSize(), merchants.size())));
+	}
 
     public Mono<MerchantDTO> update(MerchantDTO merchantDTO) {
         return merchantRepository.findById(merchantDTO.getId())
